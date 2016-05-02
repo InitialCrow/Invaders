@@ -1,15 +1,31 @@
+
+// init module ...
+
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
 var bodyParser = require("body-parser");
+var session = require('express-session');
 var app = express();
-var server = app.listen(8000,'192.168.0.44');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+var server = app.listen(8000,'127.0.0.1');
+
+// app set ...
+
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+var _session;
+app.use(session({
+    secret: '1234',
+    name: 'test',
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+}));
 
 var mysql_use = mysql.createConnection({
   host     : 'localhost',
@@ -17,6 +33,7 @@ var mysql_use = mysql.createConnection({
   password : '',
   database : 'Invaders'
 });
+
 mysql_use.connect(function(err){
 	if(!err) {
 	    console.log("Database is connected ... nn");    
@@ -24,11 +41,11 @@ mysql_use.connect(function(err){
 	    console.log("Error connecting database ... nn");    
 	}
 });
+// end of init-------------------------------------------------------------
 
-// routes...
+
+// routes of app 
 app.get('/',function (req, res) {
-
-
 	res.render('index.ejs');
 	app.use(express.static(path.join(__dirname + '/')));
 });
@@ -48,15 +65,13 @@ app.post('/log',function (req, res) {
 			
 		}
 		else{
-			
+			_session=req.session;
+			_session.user = login;
 			res.send('/inv/'+result[0].token);
 			res.end();
 		}
 		
 	});
-	
-	
-	
 });
 app.post('/sign',function (req, res) {
 	var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
@@ -82,6 +97,10 @@ app.post('/sign',function (req, res) {
 		}
 		if( checked === true){
 			mysql_use.query(insertQuery);
+
+			_session=req.session;
+			_session.user = login;
+			
 			res.send([true,token]);
 			res.end();
 			console.log('new user comming !');
@@ -103,17 +122,23 @@ app.post('/sign',function (req, res) {
 			} 
 			
 			res.send([false,msg]);
-			res.end();
-			
+			res.end();	
 		}
 	});
 
 });
 app.get('/inv/:token',function(req,res){
-	req.params = 'token';
-	res.render('test.ejs');
+	_session=req.session;
+	
+	if(_session.user){
+		req.params = 'token';
+		res.render('test.ejs');
+	}
+	else{
+		res.redirect("/");
+	}
+	
 })
-
 
 console.log('Server running at http://192.168.0.44:8000/');
 

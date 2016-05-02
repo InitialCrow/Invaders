@@ -18,7 +18,8 @@ this is release path for the game :
 		      |
 	- INIT PROJECT
 	- DEV SERVER
-	- DEV HOME PAGE*
+	- DEV HOME PAGE
+	- ADD CONTROLLER SYSTEM *
 
 ----------------------- 0.0.2
 		       |
