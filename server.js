@@ -5,20 +5,12 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
-var mysql = require('mysql');
 var bodyParser = require("body-parser");
-var session = require('express-session');
+
 var app = express();
 var server = app.listen(8000,'127.0.0.1');
+var session = require('express-session');
 
-// app set ...
-
-app.set('view engine', 'ejs');
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-var _session;
 app.use(session({
     secret: '1234',
     name: 'test',
@@ -27,20 +19,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
-var mysql_use = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'Invaders'
-});
+// controllers ...
+var HomeController = require('./controllers/HomeController.js');
 
-mysql_use.connect(function(err){
-	if(!err) {
-	    console.log("Database is connected ... nn");    
-	} else {
-	    console.log("Error connecting database ... nn");    
-	}
-});
+// app set ...
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+
 // end of init-------------------------------------------------------------
 
 
@@ -50,93 +39,21 @@ app.get('/',function (req, res) {
 	app.use(express.static(path.join(__dirname + '/')));
 });
 app.post('/log',function (req, res) {
-	var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
-	var password = req.body.password.trim().replace(/(<([^>]+)>)/ig,"");
-	
-	var selectQuery = "SELECT * FROM users WHERE login LIKE'%"+login+"%' AND password='"+password+"'";
-	mysql_use.query(selectQuery,function(err, result, field){
-		var msg = "";
-		if(result == ""){
-
-			msg = "<p><strong>Login</strong> or Password are not good !</p>";
-			
-			res.send([false,msg]);
-			res.end();
-			
-		}
-		else{
-			_session=req.session;
-			_session.user = login;
-			res.send('/inv/'+result[0].token);
-			res.end();
-		}
-		
-	});
+	HomeController.log(req, res);
 });
 app.post('/sign',function (req, res) {
-	var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
-	var password = req.body.password.trim().replace(/(<([^>]+)>)/ig,"");
-	var email = req.body.email.trim().replace(/(<([^>]+)>)/ig,"");
-	var nickname = req.body.nickname.trim().replace(/(<([^>]+)>)/ig,"");
-	var token = generateToken(20);
-	var checked = false;
-
-	var selectQuery = "SELECT * FROM users WHERE login LIKE '%"+login+"%' OR nickname LIKE '%"+nickname+"%' OR email='"+email+"' ";
-	var insertQuery = "INSERT INTO users (login,nickname,password,email,token) VALUES('"+login+"', '"+nickname+"','"+password+"','"+email+"','"+token+"');";
-
-	mysql_use.query(selectQuery,function(err, result, field){
-		var msg={
-			'type':'',
-			'msg':''
-		};
-		if(result == ""){
-			checked = true;	
-		}
-		else{
-			checked = false;		
-		}
-		if( checked === true){
-			mysql_use.query(insertQuery);
-
-			_session=req.session;
-			_session.user = login;
-			
-			res.send([true,token]);
-			res.end();
-			console.log('new user comming !');
-		}
-		else{
-			if(login === result[0].login){
-				msg.type = 'login';
-				msg.msg = "<p><strong>Login</strong> already taken !</p> ";
-			}
-			
-			if(nickname === result[0].nickname){
-				msg.type = "nickname";
-				msg.msg = "<p><strong>Nickname</strong> already taken !</p> ";
-			}
-			
-			if(email === result[0].email){
-				msg.type = "email";
-				msg.msg = "<p><strong>Email</strong> already taken !</p> ";
-			} 
-			
-			res.send([false,msg]);
-			res.end();	
-		}
-	});
+	HomeController.sign(req, res);
 
 });
 app.get('/inv/:token',function(req,res){
-	_session=req.session;
-	
-	if(_session.user){
-		req.params = 'token';
-		res.render('test.ejs');
-	}
-	else{
-		res.redirect("/");
-	}
+      	_session=req.session;
+          if(_session.user){
+            req.params = 'token';
+            res.render('test.ejs');
+          }
+          else{
+            res.redirect("/");
+          }
 	
 })
 
@@ -144,15 +61,7 @@ console.log('Server running at http://192.168.0.44:8000/');
 
 // -------------------------------helper function---------------------
 
-function generateToken(nb){
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-    for( var i=0; i < nb; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
 
 
 

@@ -92,7 +92,7 @@ function ajaxSubmit(){
 						window.location.href = 'inv/'+res[1];
 					}
 					else{
-						$alert.children('p').last().empty();
+						$alert.empty();
 
 						if(res[1].type === 'login'){
 							$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
@@ -107,7 +107,7 @@ function ajaxSubmit(){
 					}
 				},
 				error : function(res){
-					console.log(res);
+					alert('sorry bug ajax try update your browser or contact me');
 					}
 				})
 			}
@@ -129,12 +129,12 @@ function ajaxSubmit(){
 							window.location.href = res;
 						}
 						else{
-							$alert.children('p').last().empty();
+							$alert.empty();
 							$alert.append(res[1]).fadeIn(500).removeClass('hidden');
 						}
 					},
 					error : function(res){
-						console.log(res);
+						alert('sorry bug ajax try update your browser or contact me');
 					}
 				});
 			}
@@ -150,7 +150,7 @@ function secureForm(form){
 	var $inputs = $form_secure.children('input');
 
 	
-	$alert.children('p').last().empty();
+	$alert.empty();
 	
 
 	// à ameliorer;

@@ -19,13 +19,13 @@ this is release path for the game :
 	- INIT PROJECT
 	- DEV SERVER
 	- DEV HOME PAGE
-	- ADD CONTROLLER SYSTEM *
+	- ADD CONTROLLER SYSTEM
 
 ----------------------- 0.0.2
 		       |
 		       |
 		       |
-	- CREATE PORTAIL LOGIN/SUBCRIBE
+	- CREATE PORTAIL LOGIN/SUBCRIBE*
 
 ----------------------- 0.0.3
 		       |
