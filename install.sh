@@ -21,7 +21,8 @@ login VARCHAR(30) NOT NULL,
 password VARCHAR(30) NOT NULL,
 nickname VARCHAR(30) NOT NULL,
 email VARCHAR(50),
-token VARCHAR(100)
+token VARCHAR(100),
+validate INT(1)
 );
 EOF
 )

@@ -8,12 +8,12 @@ var express = require('express');
 var bodyParser = require("body-parser");
 
 var app = express();
-var server = app.listen(8000,'127.0.0.1');
+var server = app.listen(8000,'192.168.0.44');
 var session = require('express-session');
 
 app.use(session({
     secret: '1234',
-    name: 'test',
+    name: 'Invaders-sess',
     proxy: true,
     resave: true,
     saveUninitialized: true
@@ -32,11 +32,19 @@ app.use(bodyParser.json());
 
 // end of init-------------------------------------------------------------
 
-
+app.use(express.static(path.join(__dirname + '/')));
 // routes of app 
 app.get('/',function (req, res) {
-	res.render('index.ejs');
-	app.use(express.static(path.join(__dirname + '/')));
+      _session= req.session;
+      if(_session.user){
+            
+            res.redirect('/inv/'+_session.token);
+      }
+      else{
+            res.render('index.ejs');
+      }
+	
+	
 });
 app.post('/log',function (req, res) {
 	HomeController.log(req, res);
@@ -45,11 +53,19 @@ app.post('/sign',function (req, res) {
 	HomeController.sign(req, res);
 
 });
+app.get('/sign/confirm_email/:token',function (req, res) {
+
+      HomeController.confirmEmail(req, res, function(){
+        res.render('confirmEmail.ejs');
+
+        res.end();
+      });
+});
 app.get('/inv/:token',function(req,res){
       	_session=req.session;
           if(_session.user){
             req.params = 'token';
-            res.render('test.ejs');
+            res.render('dashboard.ejs');
           }
           else{
             res.redirect("/");

@@ -15,6 +15,8 @@
 var db = require('../models/Database.js');
 //set database to mysql
 var mysql_use = db.mysqlDB();
+var mailer = require('../models/Sender_email.js');
+
 
 var HomeController = function() {
 	
@@ -25,7 +27,7 @@ HomeController.prototype = {
 		var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
 		var password = req.body.password.trim().replace(/(<([^>]+)>)/ig,"");
 		
-		var selectQuery = "SELECT * FROM users WHERE login LIKE'%"+login+"%' AND password='"+password+"'";
+		var selectQuery = "SELECT * FROM users WHERE login LIKE'"+login+"' AND password='"+password+"'";
 		
 		mysql_use.query(selectQuery,function(err, result, field){
 			var msg = "";
@@ -40,6 +42,7 @@ HomeController.prototype = {
 			else{
 				_session=req.session;
 				_session.user = login;
+				_session.token = result[0].token;
 				res.send('/inv/'+result[0].token);
 				res.end();
 			}
@@ -53,9 +56,10 @@ HomeController.prototype = {
 		var nickname = req.body.nickname.trim().replace(/(<([^>]+)>)/ig,"");
 		var token = generateToken(20);
 		var checked = false;
+		var url = req.originalUrl;
 
-		var selectQuery = "SELECT * FROM users WHERE login LIKE '%"+login+"%' OR nickname LIKE '%"+nickname+"%' OR email='"+email+"' ";
-		var insertQuery = "INSERT INTO users (login,nickname,password,email,token) VALUES('"+login+"', '"+nickname+"','"+password+"','"+email+"','"+token+"');";
+		var selectQuery = "SELECT * FROM users WHERE login LIKE '"+login+"' OR nickname LIKE '"+nickname+"' OR email='"+email+"' ";
+		var insertQuery = "INSERT INTO users (login,nickname,password,email,token,validate) VALUES('"+login+"', '"+nickname+"','"+password+"','"+email+"','"+token+"','0');";
 
 		mysql_use.query(selectQuery,function(err, result, field){
 			var msg={
@@ -69,14 +73,25 @@ HomeController.prototype = {
 				checked = false;		
 			}
 			if( checked === true){
+
 				mysql_use.query(insertQuery);
 
 				_session=req.session;
 				_session.user = login;
+				_session.home_url = 'http://192.168.0.44:8000/inv'+token;
 				
 				res.send([true,token]);
+				
+
+				console.log(login +' was subscribe ! confirm mailsending to ... '+email);
+				
+				var mail ={
+					to : email,
+					subject : 'Invaders-game Confirm your email',
+					html : "<head><style>body{font-family : verdana;}</style></head><body><h1> Welcome " +login+" </h1><p>you need confim your email for join the battle <a href =http://192.168.0.44:8000"+url+"/confirm_email/"+token+"> click here</a> to confirm </p></body>"
+				};
+				mailer.sendNodemailer('smtp',mail.to,mail.subject,mail.html);// type send, to, subject, html
 				res.end();
-				console.log('new user comming !');
 			}
 			else{
 				if(login === result[0].login){
@@ -99,7 +114,28 @@ HomeController.prototype = {
 			}
 		});
 	},
-	'gotTo' :function(res,req){
+	'confirmEmail' :function(res,req, callback){
+		var url = req.req.url;
+		var part = url.split('/');
+		var token = part[part.length-1];
+		var updateQuery ="UPDATE Invaders.users SET validate = '1' WHERE users.token LIKE '"+token+"' ; ";
+	
+		mysql_use.query(updateQuery,function(err, result, field){
+			
+			if (err){
+				console.log('confirm mail error : ' + err);
+			}
+			else{
+				console.log('mail confirmed !! for token_user : ' + token);
+				callback();
+				return;
+
+			}
+		});
+		
+
+
+
 		
 	}
 };
