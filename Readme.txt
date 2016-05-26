@@ -16,23 +16,23 @@ this is release path for the game :
 		      |
 		      |
 		      |
-	- INIT PROJECT
-	- DEV SERVER
-	- DEV HOME PAGE
-	- ADD CONTROLLER SYSTEM
+	- INIT PROJECT x
+	- DEV SERVER x
+	- DEV HOME PAGE x
+	- ADD CONTROLLER SYSTEM x
 
 ----------------------- 0.0.2
 		       |
 		       |
 		       |
-	- CREATE PORTAIL LOGIN/SUBCRIBE*
+	- CREATE PORTAIL LOGIN/SUBCRIBE x
 
 ----------------------- 0.0.3
 		       |
 		       |
 		       |
-	- CREATE PROFILE AND FRIEND GESTION
-	- CREATE CHAT FOR SPEAK 
+	- CREATE PROFILE AND FRIEND GESTION *
+	- CREATE CHAT FOR SPEAK x
 
 ----------------------- 0.0.4
 		       |

@@ -42,8 +42,10 @@ HomeController.prototype = {
 			else{
 				_session=req.session;
 				_session.user = login;
+				_session.nickname = result[0].nickname
 				_session.token = result[0].token;
-				res.send('/inv/'+result[0].token);
+				var resp = {'user':result[0].nickname, 'url' : '/inv/'+result[0].token};
+				res.send(resp);
 				res.end();
 			}
 			
@@ -78,6 +80,7 @@ HomeController.prototype = {
 
 				_session=req.session;
 				_session.user = login;
+				_session.nickname = nickname;
 				_session.home_url = 'http://192.168.0.44:8000/inv'+token;
 				
 				res.send([true,token]);

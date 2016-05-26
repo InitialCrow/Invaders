@@ -62,7 +62,9 @@ function chooseForm(){
 		$swiper.fadeOut(400);
 		setTimeout(function(){
 			$page_form.fadeIn(500);
+			
 		},600);
+
 		showForm('log');
 		ajaxSubmit();
 	});
@@ -79,41 +81,41 @@ function ajaxSubmit(){
 	var $form = $('.form');
 	var $alert = $(".alert");
 
-	if($form.attr('data-type') === 'sign'){
-		$form.on('submit',function(evt){
-			evt.preventDefault();
-			if(secureForm($form)){
-				$.ajax({
-				url: $form.attr('action'),
-				method : $form.attr('method'),
-				data : $form.serialize(),	
-				success : function(res){
-					if(res[0] === true){
-						window.location.href = 'inv/'+res[1];
-					}
-					else{
-						$alert.empty();
+	 if($form.attr('data-type') === 'sign'){
+	 	$form.on('submit',function(evt){
+	 		evt.preventDefault();
+	 		if(secureForm($form)){
+	 			$.ajax({
+	 			url: $form.attr('action'),
+	 			method : $form.attr('method'),
+	 			data : $form.serialize(),	
+	 			success : function(res){
+	 				if(res[0] === true){
+	 					window.location.replace('inv/'+res[1]);
+	 				}
+	 				else{
+	 					$alert.empty();
 
-						if(res[1].type === 'login'){
-							$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
+	 					if(res[1].type === 'login'){
+	 						$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
 							
-						}
-						if(res[1].type === 'nickname'){
-							$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
-						}
-						if(res[1].type === 'email'){
-							$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
-						}
-					}
-				},
-				error : function(res){
-					alert('sorry bug ajax try update your browser or contact me');
-					}
-				})
-			}
+	 					}
+	 					if(res[1].type === 'nickname'){
+	 						$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
+	 					}
+	 					if(res[1].type === 'email'){
+	 						$alert.append(res[1].msg).fadeIn(500).removeClass('hidden');
+	 					}
+	 				}
+	 			},
+	 			error : function(res){
+	 				alert('sorry bug ajax try update your browser or contact me');
+	 				}
+	 			})
+	 		}
 
-		});
-	}
+	 	});
+	 }
 
 
 	if($form.attr('data-type') === 'log'){
@@ -126,7 +128,11 @@ function ajaxSubmit(){
 					data : $form.serialize(),	
 					success : function(res){
 						if(res[0] != false){
-							window.location.href = res;
+							
+							sessionStorage.setItem('user', res.user);
+
+							document.location.href= res.url;
+
 						}
 						else{
 							$alert.empty();

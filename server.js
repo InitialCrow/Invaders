@@ -6,10 +6,14 @@ var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var bodyParser = require("body-parser");
-
 var app = express();
-var server = app.listen(8000,'192.168.0.44');
+var server = http.createServer(app); 
 var session = require('express-session');
+var io = require('socket.io').listen(server);
+
+var initSocket = false;
+
+
 
 app.use(session({
     secret: '1234',
@@ -21,6 +25,7 @@ app.use(session({
 
 // controllers ...
 var HomeController = require('./controllers/HomeController.js');
+var DashboardController = require('./controllers/DashboardController.js');
 
 // app set ...
 app.set('view engine', 'ejs');
@@ -41,12 +46,13 @@ app.get('/',function (req, res) {
             res.redirect('/inv/'+_session.token);
       }
       else{
-            res.render('index.ejs');
+            res.render('home/index.ejs');
       }
 	
 	
 });
 app.post('/log',function (req, res) {
+
 	HomeController.log(req, res);
 });
 app.post('/sign',function (req, res) {
@@ -54,25 +60,37 @@ app.post('/sign',function (req, res) {
 
 });
 app.get('/sign/confirm_email/:token',function (req, res) {
-
       HomeController.confirmEmail(req, res, function(){
-        res.render('confirmEmail.ejs');
+        res.render('home/confirmEmail.ejs');
 
         res.end();
       });
 });
+app.get('/inv/:token/logout',function(req,res){
+        _session=req.session;
+        _session.destroy();
+        res.redirect("/");
+});
 app.get('/inv/:token',function(req,res){
       	_session=req.session;
           if(_session.user){
-            req.params = 'token';
-            res.render('dashboard.ejs');
+            if(initSocket === false){
+              DashboardController.initSocket(io,fs);
+              initSocket = true;
+            }
+           req.params = 'token';
+                res.render('dashboard/dashboard.ejs',{
+                  'session':_session
+                });
+                
           }
           else{
             res.redirect("/");
           }
-	
-})
+});
 
+
+server.listen(8000);
 console.log('Server running at http://192.168.0.44:8000/');
 
 // -------------------------------helper function---------------------
