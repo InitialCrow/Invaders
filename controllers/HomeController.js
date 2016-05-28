@@ -11,10 +11,7 @@
 
 */
 
-// connect database
-var db = require('../models/Database.js');
-//set database to mysql
-var mysql_use = db.mysqlDB();
+
 var mailer = require('../models/Sender_email.js');
 
 
@@ -23,7 +20,7 @@ var HomeController = function() {
 };
 
 HomeController.prototype = {
-	'log' : function(req, res) {
+	'log' : function(req, res, mysql_use) {
 		var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
 		var password = req.body.password.trim().replace(/(<([^>]+)>)/ig,"");
 		
@@ -51,7 +48,7 @@ HomeController.prototype = {
 			
 		});
 	},
-	'sign': function(req,res){
+	'sign': function(req,res, mysql_use){
 		var login = req.body.login.trim().replace(/(<([^>]+)>)/ig,"");
 		var password = req.body.password.trim().replace(/(<([^>]+)>)/ig,"");
 		var email = req.body.email.trim().replace(/(<([^>]+)>)/ig,"");
@@ -81,6 +78,7 @@ HomeController.prototype = {
 				_session=req.session;
 				_session.user = login;
 				_session.nickname = nickname;
+				_session.token = token;
 				_session.home_url = 'http://192.168.0.44:8000/inv'+token;
 				
 				res.send([true,token]);
@@ -117,7 +115,7 @@ HomeController.prototype = {
 			}
 		});
 	},
-	'confirmEmail' :function(res,req, callback){
+	'confirmEmail' :function(res,req, mysql_use, callback){
 		var url = req.req.url;
 		var part = url.split('/');
 		var token = part[part.length-1];

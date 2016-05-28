@@ -24,6 +24,40 @@ CREATE TABLE users (
 	token VARCHAR(100),
 	validate INT(1)
 );
+CREATE TABLE profiles (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	user_id INT(11) UNSIGNED,
+	avatar VARCHAR(100),
+	presentation TEXT,
+	CONSTRAINT user_id_users_FK FOREIGN KEY (user_id) REFERENCES users(id) 
+	
+
+);
+CREATE TABLE scores (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	user_id INT(11) UNSIGNED,
+	score INT(11),
+	CONSTRAINT user_id_scores_FK FOREIGN KEY (user_id) REFERENCES users(id) 
+
+);
+CREATE TABLE posts (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	user_id INT(11) UNSIGNED,
+	content_post TEXT,
+	CONSTRAINT user_id_posts_FK FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+);
+CREATE TABLE comments (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	user_id INT(11) UNSIGNED,
+	post_id INT(11) UNSIGNED,
+	content_com TEXT,
+	nickname VARCHAR(100),
+	CONSTRAINT post_id_comments_FK FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+	CONSTRAINT user_id_comments_FK FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+);
+
 CREATE TABLE friends (
 	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	user_id1 INT(11) NOT NULL,

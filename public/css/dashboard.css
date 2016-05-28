@@ -107,3 +107,32 @@
 .dashboard .chat-wrapper input, .dashboard .chat-wrapper input:focus, .dashboard .chat-wrapper input:active{
 	color: #B5B4B0;
 }
+
+/*-------------------------------- profile ------------------------------*/
+.dashboard .profile .main-header {
+	max-width: 85%;
+	margin: 20px auto;
+}
+.dashboard .profile .main-header .profile-img{
+	border-radius: 100%;
+	float: left;
+}
+	
+.dashboard .profile .main-header .profile-presentation{
+	display: inline-block;
+	padding-left: 40px;
+	
+}
+.dashboard .profile .main-header .profile-presentation .profile-name{
+	
+	padding-top: 20px;
+	line-height: 2;
+}
+.dashboard .profile .news-profile{
+	clear: both;
+	margin-top: 50px;
+
+}
+.dashboard .profile .news-profile h2{
+	text-align: center;
+}

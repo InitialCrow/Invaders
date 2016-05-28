@@ -11,6 +11,12 @@ var server = http.createServer(app);
 var session = require('express-session');
 var io = require('socket.io').listen(server);
 
+//mysql
+// connect database
+var db = require('./models/Database.js');
+//set database to mysql
+var mysql_use = db.mysqlDB();
+
 var initSocket = false;
 
 
@@ -53,14 +59,14 @@ app.get('/',function (req, res) {
 });
 app.post('/log',function (req, res) {
 
-	HomeController.log(req, res);
+	HomeController.log(req, res, mysql_use);
 });
 app.post('/sign',function (req, res) {
-	HomeController.sign(req, res);
+	HomeController.sign(req, res, mysql_use);
 
 });
 app.get('/sign/confirm_email/:token',function (req, res) {
-      HomeController.confirmEmail(req, res, function(){
+      HomeController.confirmEmail(req, res,mysql_use, function(){
         res.render('home/confirmEmail.ejs');
 
         res.end();
@@ -83,6 +89,15 @@ app.get('/inv/:token',function(req,res){
                   'session':_session
                 });
                 
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.get('/inv/:token/profile',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.showProfile(req, res, mysql_use);
           }
           else{
             res.redirect("/");

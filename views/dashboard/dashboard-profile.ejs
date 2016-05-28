@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>tavern Invaders 0.0.2</title>
+	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/js/lib/Swiper-3.3.1/dist/css/swiper.min.css">
+	<link rel="stylesheet" href="/public/css/global.css">
+	<link rel="stylesheet" href="/public/css/dashboard.css">
+</head>
+<body>
+	<div class="dashboard wrapper">
+		
+		<% include ../partials/partial-dashboard-nav %>
+		<div class ="profile">
+			
+		
+			<section class="main-content col-xs-9 ">
+				<header class="main-header">
+					<% if (profile && profile.avatar ) { %>
+						<img class="profile-img" src="<%= profile.avatar %>" alt="picture of profile">
+					<% } %>
+					<div class="profile-presentation">
+						
+					
+						<h2 class="profile-name"> 
+							<% if (_session ) { %>
+								<%= _session.nickname %>
+							<% } %>
+						</h2>
+						<p>
+							<% if (profile && profile.presentation) { %>
+								<%= profile.presentation %>
+							<% } %>
+							
+						</p>
+						<p>
+							<% if (profile && profile.score) { %>
+								 Current Score : <%= profile.score %>
+							<% } %>
+						</p>
+					</div>
+				</header><!-- /header -->
+				<section class="news-profile">
+					<h2>My Dashboard</h2>
+					<p>
+						<% if (posts ) { %>
+							<ul>
+							<% posts.forEach(function(post){%>
+
+								<li><%= post.content_post %></li>
+								<% if (comments){%>
+									<%comments.forEach(function(comment){%>
+										<%if(comment.post_id === post.id){%>
+											<li>------> <%= comment.nickname%> dit: <%= comment.content_com%></li>
+										<% } %>
+									<%});%>
+								<% } %>
+							<%});%>
+								
+							</ul>
+							
+						<% } %>
+							
+					</p>
+					
+				</section>
+			</section>
+		</div>
+
+		
+			
+		
+	</div>
+	<!-- libs -->
+	<script src="/public/js/lib/jquery-2.2.3.min.js"></script>
+	<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- scripts -->
+	<script src="/public/js/dashboard.js"></script>
+
+</body>
+</html>
