@@ -26,6 +26,8 @@ ChatController.prototype = {
 	'initChat' : function(io, socket, fs){
 
 		if(_session.user){
+			// put nickname in sockent connection for disconnet good user
+			socket.client.conn.nickname = _session.nickname;
 			
 			userConnected.push(_session.nickname);
 			
@@ -43,6 +45,13 @@ ChatController.prototype = {
 			return;
 
 		}	
+	},
+	'disconnect' : function(io, socket, fs){
+		var index = userConnected.indexOf(socket.client.conn.nickname);
+		if (index > -1) {
+			userConnected.splice(index, 1);
+		}
+		io.emit('users_chat_list', userConnected);
 	}
 };
 /*----------------------helper function-------------------*/

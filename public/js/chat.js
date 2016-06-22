@@ -1,5 +1,5 @@
 //chat 0.8
-(function(window , $){
+(function(ctx , $){
 	'use strict';
 	var chat = {
 		
@@ -55,5 +55,5 @@
 			})
 		}
 	}
-	window.chat = chat;
-})(window, jQuery)
+	ctx.chat = chat;
+})(app, jQuery)

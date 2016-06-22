@@ -10,7 +10,7 @@ config.prototype = {
 	'BASE_IP' : "192.168.0.44",
 
 	// base url
-	'BASE_URL' : "http://192.168.0.44:"
+	'BASE_URL' : "http://localhost:"
 }
 
 module.exports = new config();

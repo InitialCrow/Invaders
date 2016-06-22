@@ -1,4 +1,5 @@
-
+// config ...
+var config = require('./config.js');
 // init module ...
 
 var http = require('http');
@@ -104,9 +105,28 @@ app.get('/inv/:token/profile',function(req,res){
           }
 });
 
+app.post('/inv/:token/profile/post-status', function(req, res){
+        _session=req.session;
+        if(_session.user){
+           DashboardController.postStatus(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
+app.post('/inv/:token/profile/post-comment', function(req, res){
+        _session=req.session;
+        if(_session.user){
+           DashboardController.commentStatus(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
 
-server.listen(8000);
-console.log('Server running at http://192.168.0.44:8000/');
+
+server.listen(config.PORT1);
+console.log('Server running at '+ config.BASE_URL + config.PORT1);
 
 // -------------------------------helper function---------------------
 

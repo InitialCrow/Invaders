@@ -19,7 +19,7 @@
 			<section class="main-content col-xs-9 ">
 				<header class="main-header">
 					<% if (profile && profile.avatar ) { %>
-						<img class="profile-img" src="<%= profile.avatar %>" alt="picture of profile">
+						<img class="profile-img" src="<%= profile.avatar %>" alt="picture of profile" width="28%" height="28%">
 					<% } %>
 					<div class="profile-presentation">
 						
@@ -45,24 +45,32 @@
 				<section class="news-profile">
 					<h2>My Dashboard</h2>
 					<p>
-						<% if (posts ) { %>
-							<ul>
-							<% posts.forEach(function(post){%>
-
-								<li><%= post.content_post %></li>
-								<% if (comments){%>
-									<%comments.forEach(function(comment){%>
-										<%if(comment.post_id === post.id){%>
-											<li>------> <%= comment.nickname%> dit: <%= comment.content_com%></li>
-										<% } %>
-									<%});%>
-								<% } %>
-							<%});%>
+						<form action="#" method="post">
+							<textarea name="post_content" class="post-content form-control" rows="5" placeholder="whrite post ..."></textarea>
+							<button class=" post-btn btn btn-default " data-type="post" type="submit">post</button>
+							<% if (posts ) { %>
+								<ul>
+								<% posts.forEach(function(post){%>
+									
+									<li class="col-xs-12"><%= post.nickname%> : <%= post.content_post %></li>
+									<% if (comments){%>
+										<%comments.forEach(function(comment){%>
+											<%if(comment.post_id === post.id){%>
+												<li class="col-xs-12">------> <%= comment.nickname%> dit: <%= comment.content_com%></li>
+											<% } %>
+										<%});%>
+									<% } %>
+									<div class="form-group col-xs-9">
+										<textarea name="post_comment" class=" comment-content form-control" rows="5" placeholder="whrite comment ..." data-type="comment"></textarea>
+										<button class=" post-btn btn btn-default " type="submit" data-type="comment"  data-post-id="<%= post.id %>">comment</button>
+									</div>
+								<%});%>
 								
-							</ul>
-							
-						<% } %>
-							
+									
+								</ul>
+								
+							<% } %>
+						</form>		
 					</p>
 					
 				</section>
@@ -79,6 +87,10 @@
 
 	<!-- scripts -->
 	<script src="/public/js/dashboard.js"></script>
+
+	<script>
+		app.init();
+	</script>
 
 </body>
 </html>

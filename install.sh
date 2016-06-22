@@ -44,6 +44,7 @@ CREATE TABLE posts (
 	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	user_id INT(11) UNSIGNED,
 	content_post TEXT,
+	nickname VARCHAR(100),
 	CONSTRAINT user_id_posts_FK FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 
 );

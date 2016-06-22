@@ -28,10 +28,22 @@ DashboardController.prototype = {
 		io.sockets.on('connection', function (socket) {
                     		console.log("-> "+_session.user + " s'est connecter à la tavern !");
                     		ChatController.initChat(io,socket, fs);
+                    		socket.on('disconnect',function(){
+                    			ChatController.disconnect(io,socket, fs);
+                    			socket.disconnect();
+
+                    		});
                 	});
+		
 	},
 	'showProfile' : function(req, res, mysql){
 		ProfileController.init(req, res, mysql);
+	},
+	'postStatus' : function(req, res, mysql){
+		ProfileController.postStatus(req, res, mysql);
+	},
+	'commentStatus' : function(req, res, mysql){
+		ProfileController.commentStatus(req, res, mysql);
 	}
 };
 /*----------------------helper function-------------------*/

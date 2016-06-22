@@ -68,6 +68,30 @@ ProfileController.prototype = {
 			}
 		});
 
+	},
+	'postStatus' : function(req, res, mysql_use){
+		req.params = 'token';
+		var _session = req.session;
+		var post_content = req.body.content;
+		
+		var insert = "INSERT INTO Invaders.posts ( user_id, content_post, nickname) VALUES ('"+_session.user_id+"','"+post_content+"' , '"+_session.nickname+"');"
+		mysql_use.query(insert, function(){
+			res.send(true);
+		});
+
+		
+	},
+	'commentStatus' : function(req, res, mysql_use){
+		req.params = 'token';
+		var _session = req.session;
+		var comment_content = req.body.content;
+		var post_id = req.body.post_id;
+		var insert = "INSERT INTO Invaders.comments ( user_id, content_com, post_id, nickname) VALUES ('"+_session.user_id+"','"+comment_content+"' ,'"+post_id+"','"+_session.nickname+"');"
+		mysql_use.query(insert, function(){
+			res.send(true);
+		});
+
+		
 	}
 };
 /*----------------------helper function-------------------*/

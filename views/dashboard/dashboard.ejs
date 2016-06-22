@@ -37,12 +37,17 @@
 	<script src="/public/js/lib/jquery-2.2.3.min.js"></script>
 	<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/public/js/lib/Swiper-3.3.1/dist/js/swiper.min.js"></script>
+	<!-- scripts -->
+	<script src="/public/js/dashboard.js"></script>
 	<!-- modules -->
 	<% include ../partials/partial-socket %>
 	<% include ../partials/partial-chat-script %>
 
-	<!-- scripts -->
-	<script src="/public/js/dashboard.js"></script>
+	<script>
+		app.init();
+	</script>
+
+	
 
 </body>
 </html>
