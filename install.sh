@@ -26,7 +26,7 @@ CREATE TABLE users (
 );
 CREATE TABLE profiles (
 	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	user_id INT(11) UNSIGNED,
+	user_id INT(11) UNSIGNED UNIQUE,
 	avatar VARCHAR(100),
 	presentation TEXT,
 	CONSTRAINT user_id_users_FK FOREIGN KEY (user_id) REFERENCES users(id) 
@@ -35,7 +35,7 @@ CREATE TABLE profiles (
 );
 CREATE TABLE scores (
 	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	user_id INT(11) UNSIGNED,
+	user_id INT(11) UNSIGNED UNIQUE,
 	score INT(11),
 	CONSTRAINT user_id_scores_FK FOREIGN KEY (user_id) REFERENCES users(id) 
 

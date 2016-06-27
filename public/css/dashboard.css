@@ -33,6 +33,7 @@
 
 /*-------------------right column-------------------*/
 .dashboard .main-content{
+
 	padding: inherit;
 }
 
@@ -123,6 +124,10 @@
 	padding-left: 40px;
 	
 }
+.dashboard .profile .main-header .profile-text{
+	white-space: pre;
+	
+}
 .dashboard .profile .main-header .profile-presentation .profile-name{
 	
 	padding-top: 20px;
@@ -133,6 +138,13 @@
 	margin-top: 50px;
 
 }
+.dashboard .profile .news-profile ul li{
+	white-space: pre;
+
+}
 .dashboard .profile .news-profile h2{
 	text-align: center;
+}
+.dashboard .profile .update-profile-btn{
+	float: right;
 }

@@ -12,11 +12,6 @@
 
 -chat
 */
-
-
-
-
-
 var ProfileController = function() {
 	
 };
@@ -31,8 +26,11 @@ ProfileController.prototype = {
 		mysql_use.query(select, function(err, user, field){
 		
 			if(user[0].validate == 1){
+
+				
 				var selectProfil = "SELECT profiles.avatar, profiles.presentation, scores.score FROM profiles, scores WHERE  profiles.user_id ='"+user[0].id+"' AND scores.user_id ='"+user[0].id+"'";
 				mysql_use.query(selectProfil, function(err2,profile,field2){
+
 
 					var selectPost = "SELECT users.nickname, posts.content_post, posts.id  FROM users, posts  WHERE posts.user_id ='"+user[0].id+"' AND users.id ='"+user[0].id+"'";
 					
@@ -40,22 +38,35 @@ ProfileController.prototype = {
 						var comments = [];
 						
 						var post_count =0;
+
+						if(posts == ''){
+							res.render('dashboard/dashboard-profile.ejs',{
+						                			  'session':_session,
+						                			  'profile': profile[0],
+						                			  'posts': posts,
+						                			  'comments':comments
+						             })
+						}
 						posts.forEach(function(post){
 							
 							var selectComment = "SELECT comments.content_com, comments.nickname, comments.post_id FROM comments WHERE post_id='"+post.id+"'"; 
 							mysql_use.query(selectComment, function(err4, comment, field4){
 								post_count++;
+
 								for(var i =0; i< comment.length; i++){
 									comments.push(comment[i]);
 								}
 								if(post_count === posts.length){
+
 									res.render('dashboard/dashboard-profile.ejs',{
 						                			  'session':_session,
 						                			  'profile': profile[0],
 						                			  'posts': posts,
 						                			  'comments':comments
-						                		});		
+						                		});
+						             	
 								}
+
 							})
 
 						});
@@ -67,19 +78,16 @@ ProfileController.prototype = {
 				res.end();
 			}
 		});
-
 	},
 	'postStatus' : function(req, res, mysql_use){
 		req.params = 'token';
 		var _session = req.session;
 		var post_content = req.body.content;
 		
-		var insert = "INSERT INTO Invaders.posts ( user_id, content_post, nickname) VALUES ('"+_session.user_id+"','"+post_content+"' , '"+_session.nickname+"');"
-		mysql_use.query(insert, function(){
+		var insertQuery = "INSERT INTO Invaders.posts ( user_id, content_post, nickname) VALUES ('"+_session.user_id+"','"+post_content+"' , '"+_session.nickname+"');"
+		mysql_use.query(insertQuery, function(){
 			res.send(true);
 		});
-
-		
 	},
 	'commentStatus' : function(req, res, mysql_use){
 		req.params = 'token';
@@ -89,11 +97,39 @@ ProfileController.prototype = {
 		var insert = "INSERT INTO Invaders.comments ( user_id, content_com, post_id, nickname) VALUES ('"+_session.user_id+"','"+comment_content+"' ,'"+post_id+"','"+_session.nickname+"');"
 		mysql_use.query(insert, function(){
 			res.send(true);
-		});
+		});	
+	},
+	'updateProfile' : function( fs, req, res, mysql_use){
+		req.params  = 'token';
+		var _session = req.session;
+		var profile_presentation = req.body.presentation;
+		var avatar_file = req.file;
 
+		if(avatar_file != '' && avatar_file !== undefined){
+			var ext = avatar_file.originalname.substr(avatar_file.originalname.lastIndexOf('.') + 1);
+			var final_name_avatar = generateToken(50);
+			fs.rename(avatar_file.path, './uploads/avatars/'+final_name_avatar+'.'+ext);
+			var updateQuery = "UPDATE Invaders.profiles SET avatar ='/uploads/avatars/"+final_name_avatar+'.'+ext+"' WHERE profiles.user_id ='"+_session.user_id+"';";
+			mysql_use.query(updateQuery);
+		}
 		
+	
+		
+
+		var updateQuery = "UPDATE Invaders.profiles SET presentation ='"+profile_presentation+"' WHERE profiles.user_id ='"+_session.user_id+"';";
+		mysql_use.query(updateQuery, function(){
+			res.redirect('/inv/'+_session.token+'/profile');
+		});
 	}
 };
 /*----------------------helper function-------------------*/
+function generateToken(nb){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
+    for( var i=0; i < nb; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 module.exports = new ProfileController();

@@ -3,7 +3,7 @@ var config = require('./config.js');
 // init module ...
 
 var http = require('http');
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 var express = require('express');
 var bodyParser = require("body-parser");
@@ -12,6 +12,8 @@ var server = http.createServer(app);
 var session = require('express-session');
 var io = require('socket.io').listen(server);
 
+var multer  = require('multer')
+var upload = multer({ dest: './uploads/tmp' })
 //mysql
 // connect database
 var db = require('./models/Database.js');
@@ -37,8 +39,9 @@ var DashboardController = require('./controllers/DashboardController.js');
 // app set ...
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 
 
 
@@ -123,7 +126,16 @@ app.post('/inv/:token/profile/post-comment', function(req, res){
             res.redirect("/");
         }
 });
-
+app.post('/inv/:token/profile/modify',upload.single('avatar') ,function(req, res, next){
+        
+        _session=req.session;
+        if(_session.user){
+           DashboardController.updateProfile(fs,req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
 
 server.listen(config.PORT1);
 console.log('Server running at '+ config.BASE_URL + config.PORT1);

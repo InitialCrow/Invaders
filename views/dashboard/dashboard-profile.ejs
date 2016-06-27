@@ -14,6 +14,7 @@
 		
 		<% include ../partials/partial-dashboard-nav %>
 		<div class ="profile">
+			<button class="update-profile-btn btn btn-default">update profile</button>
 			
 		
 			<section class="main-content col-xs-9 ">
@@ -24,44 +25,33 @@
 					<div class="profile-presentation">
 						
 					
-						<h2 class="profile-name"> 
-							<% if (_session ) { %>
-								<%= _session.nickname %>
-							<% } %>
-						</h2>
-						<p>
-							<% if (profile && profile.presentation) { %>
-								<%= profile.presentation %>
-							<% } %>
-							
-						</p>
-						<p>
-							<% if (profile && profile.score) { %>
-								 Current Score : <%= profile.score %>
-							<% } %>
-						</p>
+						<h2 class="profile-name"> <% if (_session ) { %><%= _session.nickname %><% } %></h2>
+						<p class="profile-text"><% if (profile && profile.presentation) { %><%= profile.presentation %><% } %></p>
+						<p><% if (profile && profile.score != 'NULL') { %>Current Score : <%= profile.score %><% } %></p>
 					</div>
 				</header><!-- /header -->
 				<section class="news-profile">
 					<h2>My Dashboard</h2>
 					<p>
 						<form action="#" method="post">
-							<textarea name="post_content" class="post-content form-control" rows="5" placeholder="whrite post ..."></textarea>
+						
+							<textarea name="post_content" class="post-content form-control" rows="5" placeholder="whrite post ..." type="text"></textarea>
+
 							<button class=" post-btn btn btn-default " data-type="post" type="submit">post</button>
 							<% if (posts ) { %>
 								<ul>
 								<% posts.forEach(function(post){%>
 									
-									<li class="col-xs-12"><%= post.nickname%> : <%= post.content_post %></li>
+									<li class="col-xs-12"><p><%= post.nickname%> : <%= post.content_post %></p></li>
 									<% if (comments){%>
 										<%comments.forEach(function(comment){%>
 											<%if(comment.post_id === post.id){%>
-												<li class="col-xs-12">------> <%= comment.nickname%> dit: <%= comment.content_com%></li>
+												<li class="col-xs-12"><p>------> <%= comment.nickname%> a dit: <%= comment.content_com%></p></li>
 											<% } %>
 										<%});%>
 									<% } %>
 									<div class="form-group col-xs-9">
-										<textarea name="post_comment" class=" comment-content form-control" rows="5" placeholder="whrite comment ..." data-type="comment"></textarea>
+										<textarea name="post_comment" class=" comment-content form-control" rows="5" placeholder="whrite comment ..." data-type="comment" type="text"></textarea>
 										<button class=" post-btn btn btn-default " type="submit" data-type="comment"  data-post-id="<%= post.id %>">comment</button>
 									</div>
 								<%});%>

@@ -44,6 +44,9 @@ DashboardController.prototype = {
 	},
 	'commentStatus' : function(req, res, mysql){
 		ProfileController.commentStatus(req, res, mysql);
+	},
+	'updateProfile' : function(fs, req, res, mysql){
+		ProfileController.updateProfile(fs,req, res, mysql);
 	}
 };
 /*----------------------helper function-------------------*/

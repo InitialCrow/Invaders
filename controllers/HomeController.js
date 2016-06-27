@@ -121,7 +121,17 @@ HomeController.prototype = {
 		var url = req.req.url;
 		var part = url.split('/');
 		var token = part[part.length-1];
+		var selectQuery = "SELECT users.id from users WHERE users.token LIKE '"+token+"';";
+
+		mysql_use.query(selectQuery, function(err, result, field){
+			
+			var insertQuery = "INSERT  IGNORE INTO profiles (user_id, avatar) VALUES ('"+result[0].id+"','/uploads/avatars/unknow.png')";
+			var insertQuery2 = "INSERT IGNORE  INTO scores (user_id, score) VALUES ('"+result[0].id+"', 0)";
+			mysql_use.query(insertQuery);
+			mysql_use.query(insertQuery2);
+		});
 		var updateQuery ="UPDATE Invaders.users SET validate = '1' WHERE users.token LIKE '"+token+"' ; ";
+
 	
 		mysql_use.query(updateQuery,function(err, result, field){
 			
