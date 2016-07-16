@@ -148,3 +148,14 @@
 .dashboard .profile .update-profile-btn{
 	float: right;
 }
+
+/*---------------------------class jquery------------------*/
+
+/*remove status or post*/
+
+.remove-content{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+

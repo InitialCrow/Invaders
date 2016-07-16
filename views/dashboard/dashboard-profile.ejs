@@ -42,11 +42,11 @@
 								<ul>
 								<% posts.forEach(function(post){%>
 									
-									<li class="col-xs-12"><p><%= post.nickname%> : <%= post.content_post %></p></li>
+									<li class="col-xs-12 post" data-type="post" data-id="<%= post.id%>"><p><%= post.nickname%> : <%= post.content_post %></p></li>
 									<% if (comments){%>
 										<%comments.forEach(function(comment){%>
 											<%if(comment.post_id === post.id){%>
-												<li class="col-xs-12"><p>------> <%= comment.nickname%> a dit: <%= comment.content_com%></p></li>
+												<li class="col-xs-12 comment" data-type="comment" data-id="<%= comment.id%>"><p>------> <%= comment.nickname%> a dit: <%= comment.content_com%></p></li>
 											<% } %>
 										<%});%>
 									<% } %>

@@ -8,6 +8,7 @@
 			});
 			this.post_content();
 			this.update_profile();
+			this.remove_content();
 		},
 		update_profile : function(){
 			var update_mode = false;
@@ -61,29 +62,6 @@
 
 					$update_form_content = $('.update-form').children();
 					$('.update-form').submit();
-				
-					// $.ajax({
-			 	// 		url: $('.update-form').attr('action'),
-			 	// 		method : $('.update-form').attr('method'),
-			 	// 		data : {'presentation' : $profile_text ,'avatar_file':$avatar_obj },
-			 	// 		success : function(res){
-			 	// 			$('.update-form').remove();
-			 	// 			$header.append($update_form_content);
-			 	// 			$('.profile-text > textarea').remove();
-			 	// 			$('.profile-text').append("<p>"+$profile_text+"</p>")
-			 	// 			$news_profile.css('display','block')
-			 				
-			 	// 		},
-			 	// 		error : function(res){
-			 	// 			alert('sorry bug ajax try update your browser or contact me');
-			 	// 		}
-			 	// 	});
-
-
-
-
-
-
 				}
 				
 			});
@@ -94,18 +72,25 @@
 			
 
 			$post_btn.on('click', function(evt){
+				var $elem = evt.target;
+				
 				var $form = $('form');
 				var $this = $(this).attr('data-type');
 				evt.preventDefault();
 				//if post is a status or comment
 				if($this === 'post'){
 					$form.attr('action', 'profile/post-status');
+					if($('.post-content').val() == ""|| $('.post-content').val() == " "){
+						
+						return;
+					}
 				
 					$.ajax({
 			 			url: $form.attr('action'),
 			 			method : $form.attr('method'),
 			 			data :{'content' : $('.post-content').val()},	
 			 			success : function(res){
+			 				window.location.href = window.location.href;
 			 				
 			 			},
 			 			error : function(res){
@@ -116,12 +101,19 @@
 				else if($this === 'comment'){
 					$form.attr('action', 'profile/post-comment');
 					
-					var comment_content = $(this).parent().find('textarea').val();					
+					var comment_content = $(this).parent().find('textarea').val();
+					if(comment_content == ""|| comment_content == " "){
+						return;
+					}					
 					$.ajax({
 			 			url: $form.attr('action'),
 			 			method : $form.attr('method'),
 			 			data : {'content' : comment_content , 'post_id': $(this).attr('data-post-id')},	
 			 			success : function(res){
+			 				var insertAt = $($elem).parent();
+
+			 				insertAt.before("<li class='col-xs-12 comment' data-type='comment'><p>------> "+res.comment_nickname+" a dit: "+res.comment_content+"</p></li>")
+			 				
 			 				
 			 			},
 			 			error : function(res){
@@ -131,7 +123,79 @@
 					
 				}
 			});
-		}
+		},
+		remove_content : function(){
+			$(' .post, .comment').on('mouseenter', function(){
+				var $form = $('form');
+
+				var $type = $(this).attr('data-type');
+
+
+				
+
+				
+					
+					$(this).append("<button type='submit' class='remove-content btn btn-default'>x</button>")
+					$remove_btn = $('.remove-content');
+					$remove_btn.on('mouseenter',function(){
+					
+						$(this).parent().css('background-color','lightgrey');
+					})
+					$remove_btn.on('mouseleave',function(){
+					
+						$(this).parent().css('background-color','inherit');
+					})
+					
+					$remove_btn.on('click',function(evt){
+						evt.preventDefault();
+						
+							var $elem = $(this).parent()
+							var $id= $elem.attr('data-id');
+							$form.attr('action','profile/supp/'+$type+'/'+$id);
+							$.ajax({
+					 			url: $form.attr('action'),
+					 			method : 'get',	
+					 			success : function(res){
+					 				if($elem.attr('data-type')==='post'){
+					 					window.location.href = window.location.href;
+					 				}
+					 				else{
+					 					$($elem).remove();
+
+					 					alert('comment deleted ! ');
+					 				}
+					 			},
+					 			error : function(res){
+					 				alert('sorry bug ajax try update your browser or contact me');
+					 			}
+				 			});
+						
+					});
+				
+				$remove_btn.on('mouseleave',function(){
+				
+					$(this).parent().css('background-color','inherit');
+				})
+
+				
+
+					
+
+				
+				
+				
+
+				
+			})
+			$(' .post, .comment').on('mouseleave', function(){
+				$(this).css('background-color','inherit');
+				$('.remove-content').remove();
+
+
+				
+			});
+			
+		},
 	};
 	var self = app;
 	ctx.app = app;

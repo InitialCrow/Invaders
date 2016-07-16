@@ -47,6 +47,9 @@ DashboardController.prototype = {
 	},
 	'updateProfile' : function(fs, req, res, mysql){
 		ProfileController.updateProfile(fs,req, res, mysql);
+	},
+	'removePost' : function(req, res, mysql){
+		ProfileController.removePost(req, res, mysql);
 	}
 };
 /*----------------------helper function-------------------*/

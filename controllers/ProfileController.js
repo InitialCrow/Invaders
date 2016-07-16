@@ -36,6 +36,7 @@ ProfileController.prototype = {
 					
 					mysql_use.query(selectPost, function(err3,posts,field3){
 						var comments = [];
+						posts.reverse();// put last post on the top
 						
 						var post_count =0;
 
@@ -49,7 +50,7 @@ ProfileController.prototype = {
 						}
 						posts.forEach(function(post){
 							
-							var selectComment = "SELECT comments.content_com, comments.nickname, comments.post_id FROM comments WHERE post_id='"+post.id+"'"; 
+							var selectComment = "SELECT comments.id, comments.content_com, comments.nickname, comments.post_id FROM comments WHERE post_id='"+post.id+"'"; 
 							mysql_use.query(selectComment, function(err4, comment, field4){
 								post_count++;
 
@@ -84,9 +85,10 @@ ProfileController.prototype = {
 		var _session = req.session;
 		var post_content = req.body.content;
 		
-		var insertQuery = "INSERT INTO Invaders.posts ( user_id, content_post, nickname) VALUES ('"+_session.user_id+"','"+post_content+"' , '"+_session.nickname+"');"
+		var insertQuery = "INSERT INTO Invaders.posts ( user_id, content_post, nickname) VALUES ('"+_session.user_id+"','"+post_content+"' , '"+_session.nickname+"');";
+		var result = {'post_nickname':_session.nickname, 'post_content': post_content}; //res of request
 		mysql_use.query(insertQuery, function(){
-			res.send(true);
+			res.send(result);
 		});
 	},
 	'commentStatus' : function(req, res, mysql_use){
@@ -94,9 +96,10 @@ ProfileController.prototype = {
 		var _session = req.session;
 		var comment_content = req.body.content;
 		var post_id = req.body.post_id;
-		var insert = "INSERT INTO Invaders.comments ( user_id, content_com, post_id, nickname) VALUES ('"+_session.user_id+"','"+comment_content+"' ,'"+post_id+"','"+_session.nickname+"');"
+		var insert = "INSERT INTO Invaders.comments ( user_id, content_com, post_id, nickname) VALUES ('"+_session.user_id+"','"+comment_content+"' ,'"+post_id+"','"+_session.nickname+"');";
+		var result = {'comment_nickname':_session.nickname, 'comment_content': comment_content}; //res of request
 		mysql_use.query(insert, function(){
-			res.send(true);
+			res.send(result);
 		});	
 	},
 	'updateProfile' : function( fs, req, res, mysql_use){
@@ -120,6 +123,24 @@ ProfileController.prototype = {
 		mysql_use.query(updateQuery, function(){
 			res.redirect('/inv/'+_session.token+'/profile');
 		});
+	},
+	'removePost' : function(req, res, mysql_use){
+		if(req.params.type === 'comment'){
+			var removeQuery = "DELETE FROM comments WHERE comments.id ='"+req.params.id+"'";
+			mysql_use.query(removeQuery);
+			res.end();
+		}
+		if(req.params.type === 'post'){
+			var removeQuery = "DELETE FROM posts WHERE posts.id ='"+req.params.id+"'";
+			mysql_use.query(removeQuery);
+			res.end();
+		}
+	
+		
+		
+		
+
+
 	}
 };
 /*----------------------helper function-------------------*/

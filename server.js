@@ -136,6 +136,16 @@ app.post('/inv/:token/profile/modify',upload.single('avatar') ,function(req, res
             res.redirect("/");
         }
 });
+app.get('/inv/:token/profile/supp/:type/:id' ,function(req,res){
+     _session=req.session;
+       
+        if(_session.user){
+           DashboardController.removePost(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+})
 
 server.listen(config.PORT1);
 console.log('Server running at '+ config.BASE_URL + config.PORT1);
