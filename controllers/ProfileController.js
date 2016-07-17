@@ -32,7 +32,7 @@ ProfileController.prototype = {
 				mysql_use.query(selectProfil, function(err2,profile,field2){
 
 
-					var selectPost = "SELECT users.nickname, posts.content_post, posts.id  FROM users, posts  WHERE posts.user_id ='"+user[0].id+"' AND users.id ='"+user[0].id+"'";
+					var selectPost = "SELECT posts.nickname, posts.content_post, posts.id  FROM users, posts  WHERE posts.user_id ='"+user[0].id+"' AND users.id ='"+user[0].id+"'";
 					
 					mysql_use.query(selectPost, function(err3,posts,field3){
 						var comments = [];
@@ -42,6 +42,7 @@ ProfileController.prototype = {
 
 						if(posts == ''){
 							res.render('dashboard/dashboard-profile.ejs',{
+										  'nickname':null,
 						                			  'session':_session,
 						                			  'profile': profile[0],
 						                			  'posts': posts,
@@ -60,6 +61,7 @@ ProfileController.prototype = {
 								if(post_count === posts.length){
 
 									res.render('dashboard/dashboard-profile.ejs',{
+										  'nickname':null,
 						                			  'session':_session,
 						                			  'profile': profile[0],
 						                			  'posts': posts,

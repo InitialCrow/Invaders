@@ -17,6 +17,7 @@
 
 var ChatController = require('./ChatController.js');
 var ProfileController = require('./ProfileController.js');
+var FriendController = require('./FriendController.js');
 
 var DashboardController = function() {
 	
@@ -50,6 +51,15 @@ DashboardController.prototype = {
 	},
 	'removePost' : function(req, res, mysql){
 		ProfileController.removePost(req, res, mysql);
+	},
+	'initFriend' : function(req, res, mysql){
+		FriendController.init(req, res, mysql);
+	},
+	'showFriendProfile' : function(req, res, mysql){
+		FriendController.showFriendProfile(req, res, mysql);
+	},
+	'postFriendStatus' : function(req, res, mysql){
+		FriendController.postFriendStatus(req, res, mysql);
 	}
 };
 /*----------------------helper function-------------------*/

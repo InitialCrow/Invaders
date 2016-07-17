@@ -14,7 +14,7 @@
 		
 		<% include ../partials/partial-dashboard-nav %>
 		<div class ="profile">
-			<button class="update-profile-btn btn btn-default">update profile</button>
+			<% if (nickname ===null){ %><button class="update-profile-btn btn btn-default">update profile</button><% } %>
 			
 		
 			<section class="main-content col-xs-9 ">
@@ -25,9 +25,9 @@
 					<div class="profile-presentation">
 						
 					
-						<h2 class="profile-name"> <% if (_session ) { %><%= _session.nickname %><% } %></h2>
+						<h2 class="profile-name"> <% if (nickname != null){%><%= nickname%><% }else { %><%= _session.nickname %><% } %></h2>
 						<p class="profile-text"><% if (profile && profile.presentation) { %><%= profile.presentation %><% } %></p>
-						<p><% if (profile && profile.score != 'NULL') { %>Current Score : <%= profile.score %><% } %></p>
+						<p><% if (profile && profile.score != null) { %>Current Score : <%= profile.score %><% } %></p>
 					</div>
 				</header><!-- /header -->
 				<section class="news-profile">

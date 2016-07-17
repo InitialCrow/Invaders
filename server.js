@@ -145,7 +145,46 @@ app.get('/inv/:token/profile/supp/:type/:id' ,function(req,res){
           else{
             res.redirect("/");
         }
-})
+});
+
+// firends ...
+app.get('/inv/:token/friends',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.initFriend(req, res, mysql_use);
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.get('/inv/:token/friend-profile/:id',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.showFriendProfile(req, res, mysql_use);
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.post('/inv/:token/friend-profile/profile/post-status/:id', function(req, res){
+        _session=req.session;
+        if(_session.user){
+           DashboardController.postFriendStatus(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
+app.post('/inv/:token/friend-profile/profile/post-comment', function(req, res){
+        _session=req.session;
+        if(_session.user){
+           DashboardController.commentStatus(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
+
 
 server.listen(config.PORT1);
 console.log('Server running at '+ config.BASE_URL + config.PORT1);

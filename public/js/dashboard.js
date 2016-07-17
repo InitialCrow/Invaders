@@ -80,6 +80,14 @@
 				//if post is a status or comment
 				if($this === 'post'){
 					$form.attr('action', 'profile/post-status');
+					
+					// take id of friend
+
+					var split = window.location.href.split('/');
+					if(isNaN(split[split.length-1]) !== true){ // if is a number
+						$form.attr('action', 'profile/post-status/'+split[split.length-1]);
+					}
+
 					if($('.post-content').val() == ""|| $('.post-content').val() == " "){
 						
 						return;
@@ -129,7 +137,10 @@
 				var $form = $('form');
 
 				var $type = $(this).attr('data-type');
-
+				var split = window.location.href.split('/');
+				if(isNaN(split[split.length-1]) !== true){ // if is a number
+					return;
+				}
 
 				
 
@@ -177,15 +188,6 @@
 					$(this).parent().css('background-color','inherit');
 				})
 
-				
-
-					
-
-				
-				
-				
-
-				
 			})
 			$(' .post, .comment').on('mouseleave', function(){
 				$(this).css('background-color','inherit');
