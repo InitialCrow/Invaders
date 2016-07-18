@@ -60,7 +60,16 @@ DashboardController.prototype = {
 	},
 	'postFriendStatus' : function(req, res, mysql){
 		FriendController.postFriendStatus(req, res, mysql);
-	}
+	},
+	'searchFriend' : function(req, res, mysql){
+		FriendController.searchFriend(req, res, mysql);
+	},
+	'addFriendRequest' : function(req, res, mysql){
+		FriendController.addFriendRequest(req, res, mysql);
+	},
+	'addFriend' : function(req, res, mysql){
+		FriendController.addFriend(req, res, mysql);
+	},
 };
 /*----------------------helper function-------------------*/
 

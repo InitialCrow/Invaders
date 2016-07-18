@@ -1,6 +1,7 @@
 (function(ctx, $){
 	var app = {
 		init : function(){
+			this.cssHeight();
 			// disconect socket on click anv button
 			var $nav_disconect = $('.navy-btn');
 			$nav_disconect.on('click', function(evt){
@@ -9,6 +10,13 @@
 			this.post_content();
 			this.update_profile();
 			this.remove_content();
+			this.searchFriend();
+			this.addFriend();
+		},
+		cssHeight : function(){
+			//hack for height always 100%
+			var height = $(document).height();
+			$('.home, .left-column').css('height',height);
 		},
 		update_profile : function(){
 			var update_mode = false;
@@ -138,14 +146,9 @@
 
 				var $type = $(this).attr('data-type');
 				var split = window.location.href.split('/');
-				if(isNaN(split[split.length-1]) !== true){ // if is a number
+				if(isNaN(split[split.length-1]) !== true || split[split.length-1] === 'pre'){ // if is a number
 					return;
 				}
-
-				
-
-				
-					
 					$(this).append("<button type='submit' class='remove-content btn btn-default'>x</button>")
 					$remove_btn = $('.remove-content');
 					$remove_btn.on('mouseenter',function(){
@@ -198,6 +201,59 @@
 			});
 			
 		},
+		searchFriend : function(){
+			var $form = $('form');
+			$('.search-btn').on('click', function(evt){
+				evt.preventDefault();
+				$form.attr('action','friends/search');
+				var $search = $('.search').val();
+				$.ajax({
+		 			url: $form.attr('action'),
+		 			method : 'post',
+		 			data : {'searchRequest' : $search},	
+		 			success : function(res){
+		 				if(res.error){
+		 					$('.error-msg').remove();
+		 					$form.after("<p class='error-msg'>"+res.error+"</p>");	
+		 				}
+		 				else{
+		 					
+		 					$('.error-msg').remove();
+		 					$('.name-player').remove()
+		 					$form.after("<a class='name-player' href='friend-profile/"+res.user.id+"/pre'><img src='"+res.profile.avatar+"' alt='picture of request friend' height='50px' width='50px'>"+res.user.nickname+"</a>");	
+		 				}
+		 			},
+		 			error : function(res){
+		 				alert('sorry bug ajax try update your browser or contact me');
+		 			}
+			 	});
+			})
+		},
+		addFriend : function(){
+			var $form = $('form');
+			var split = window.location.href.split('/');
+			if(isNaN(split[split.length-2]) !== true && split[split.length-1] === 'pre'){ // if is a number
+				
+				$form.attr('action','inv');
+				
+			}
+			else{
+				return;
+			}
+			$('.add-friend-btn').on('click', function(){
+				$.ajax({
+		 			url: $form.attr('action'),
+		 			method : 'post',
+		 			success : function(res){
+		 				alert(res);
+		 				
+		 			},
+		 			error : function(res){
+		 				alert('sorry bug ajax try update your browser or contact me');
+		 			}
+			 	});
+			})
+		}
 	};
 	var self = app;
 	ctx.app = app;

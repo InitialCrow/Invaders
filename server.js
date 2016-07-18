@@ -184,7 +184,42 @@ app.post('/inv/:token/friend-profile/profile/post-comment', function(req, res){
             res.redirect("/");
         }
 });
-
+app.post('/inv/:token/friends/search',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.searchFriend(req, res, mysql_use);
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.get('/inv/:token/friend-profile/:id/:pre',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.showFriendProfile(req, res, mysql_use);
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.post('/inv/:token/friend-profile/:id/inv',function(req,res){
+        _session=req.session;
+          if(_session.user){
+           DashboardController.addFriendRequest(req, res, mysql_use);
+          }
+          else{
+            res.redirect("/");
+          }
+});
+app.get('/inv/:token/friend-add/:id', function(req, res){
+        _session=req.session;
+        if(_session.user){
+           DashboardController.addFriend(req, res, mysql_use);
+        }
+          else{
+            res.redirect("/");
+        }
+});
 
 server.listen(config.PORT1);
 console.log('Server running at '+ config.BASE_URL + config.PORT1);

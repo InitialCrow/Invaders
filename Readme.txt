@@ -31,14 +31,14 @@ this is release path for the game :
 		       |
 		       |
 		       |
-	- CREATE PROFILE AND FRIEND GESTION *
+	- CREATE PROFILE AND FRIEND GESTION x
 	- CREATE CHAT FOR SPEAK x
 
 ----------------------- 0.0.4
 		       |
 		       |
 		       |
-	- CREATE PLAYER LOG SYSTEM
+	- CREATE PLAYER LOG SYSTEM *
 	- CREATE MOB
 	- CREATE GAME ENGINE
 	- PLAYER SKILL

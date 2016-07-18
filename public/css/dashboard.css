@@ -2,7 +2,7 @@
 /*---------------------------left column----------------------------*/
 
 .dashboard .left-column{
-	height: 1130px;
+	min-height:100vh;
 	color: white;
 	background-color: #232629;
 }
@@ -118,7 +118,7 @@
 	border-radius: 100%;
 	float: left;
 }
-	
+
 .dashboard .profile .main-header .profile-presentation{
 	display: inline-block;
 	padding-left: 40px;
@@ -135,7 +135,22 @@
 }
 .dashboard .profile .news-profile{
 	clear: both;
-	margin-top: 50px;
+	margin: 25px auto;
+
+	max-width: 92%;
+	
+
+}
+.dashboard .profile .news-profile .post{
+	margin: 20px 0;
+	
+
+}
+.dashboard .profile .news-profile button{
+	margin : 5px 0 40px 0;
+	
+
+	
 
 }
 .dashboard .profile .news-profile ul li{
@@ -147,6 +162,58 @@
 }
 .dashboard .profile .update-profile-btn{
 	float: right;
+}
+/*----------------------------- search friend ------------*/
+
+.dashboard .profile .name-player{
+	text-decoration: none;
+	display: block;
+	margin: 15px 0;
+
+	color: black;
+	text-align: center;
+
+}
+.dashboard .profile .name-player img{
+	text-align: center;
+	display: block;
+	margin: 5px auto;
+
+}
+.dashboard .profile .search-area{
+	max-width: 90%;
+	margin: 0px auto;
+}
+.dashboard .profile .search-area button{
+	
+	margin: 5px auto;
+}
+.dashboard .profile .friend-area{
+	max-width: 90%;
+	margin: 40px auto;
+
+}
+.dashboard .profile .friend-area ul li{
+	display: inline-block;
+
+}
+.dashboard .profile .friend-request-area{
+	max-width: 90%;
+	margin: 40px auto;
+
+}
+.dashboard .profile .friend-request-area ul li{
+	display: inline-block;
+
+}
+.dashboard .profile .requested-area{
+	max-width: 90%;
+	margin: 60px auto;
+
+}
+.dashboard .profile .requested-area ul li{
+	display: inline-block;
+
 }
 
 /*---------------------------class jquery------------------*/

@@ -20,6 +20,7 @@ ProfileController.prototype = {
 	'init':function(req, res, mysql_use){
 		req.params = 'token';
 		var _session = req.session;
+		var guestMode = false;
 
 		var select = "SELECT * FROM users WHERE token='"+_session.token+"'";
 
@@ -42,6 +43,7 @@ ProfileController.prototype = {
 
 						if(posts == ''){
 							res.render('dashboard/dashboard-profile.ejs',{
+										  'guestMode':guestMode,
 										  'nickname':null,
 						                			  'session':_session,
 						                			  'profile': profile[0],
@@ -61,6 +63,7 @@ ProfileController.prototype = {
 								if(post_count === posts.length){
 
 									res.render('dashboard/dashboard-profile.ejs',{
+										  'guestMode':guestMode,
 										  'nickname':null,
 						                			  'session':_session,
 						                			  'profile': profile[0],
