@@ -20,7 +20,7 @@ var db = require('./models/Database.js');
 //set database to mysql
 var mysql_use = db.mysqlDB();
 
-var initSocket = false;
+var initTavernSocket = false; // cant reset socket when you go another page
 
 
 
@@ -84,9 +84,9 @@ app.get('/inv/:token/logout',function(req,res){
 app.get('/inv/:token',function(req,res){
       	_session=req.session;
           if(_session.user){
-            if(initSocket === false){
+            if(initTavernSocket === false){
               DashboardController.initSocket(io,fs);
-              initSocket = true;
+              initTavernSocket = true;
             }
            req.params = 'token';
                 res.render('dashboard/dashboard.ejs',{
@@ -220,7 +220,17 @@ app.get('/inv/:token/friend-add/:id', function(req, res){
             res.redirect("/");
         }
 });
+app.get('/inv/:token/play', function(req, res){
+        _session=req.session;
 
+        if(_session.user){
+           DashboardController.launchGame(io,req, res, mysql_use);
+
+        }
+          else{
+            res.redirect("/");
+        }
+})
 server.listen(config.PORT1);
 console.log('Server running at '+ config.BASE_URL + config.PORT1);
 

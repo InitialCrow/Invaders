@@ -18,6 +18,7 @@
 var ChatController = require('./ChatController.js');
 var ProfileController = require('./ProfileController.js');
 var FriendController = require('./FriendController.js');
+var GameController  = require('./GameController.js');
 
 var DashboardController = function() {
 	
@@ -25,12 +26,12 @@ var DashboardController = function() {
 
 DashboardController.prototype = {
 	'initSocket' : function( io, fs){
-		
-		io.sockets.on('connection', function (socket) {
+		var chatSocket= io.of('/chatSocket');
+		chatSocket.on('connection', function (socket) {
                     		console.log("-> "+_session.user + " s'est connecter à la tavern !");
-                    		ChatController.initChat(io,socket, fs);
+                    		ChatController.initChat(chatSocket,socket, fs);
                     		socket.on('disconnect',function(){
-                    			ChatController.disconnect(io,socket, fs);
+                    			ChatController.disconnect(chatSocket,socket, fs);
                     			socket.disconnect();
 
                     		});
@@ -70,6 +71,9 @@ DashboardController.prototype = {
 	'addFriend' : function(req, res, mysql){
 		FriendController.addFriend(req, res, mysql);
 	},
+	'launchGame' : function(io, req, res, mysql){
+		GameController.init(io, req, res, mysql);
+	}
 };
 /*----------------------helper function-------------------*/
 

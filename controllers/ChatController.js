@@ -23,7 +23,7 @@ var ChatController = function() {
 };
 
 ChatController.prototype = {
-	'initChat' : function(io, socket, fs){
+	'initChat' : function(chatSocket, socket, fs){
 
 		if(_session.user){
 			// put nickname in sockent connection for disconnet good user
@@ -32,7 +32,7 @@ ChatController.prototype = {
 			userConnected.push(_session.nickname);
 			
 			userConnected = userConnected.unique();
-			io.emit('users_chat_list', userConnected);
+			chatSocket.emit('users_chat_list', userConnected);
 			socket.on('first_load', function(){
 
 				socket.emit('msg_receiver', history);
@@ -40,18 +40,18 @@ ChatController.prototype = {
 			socket.on('msg_sended',function(msg){
 				history.push(msg);
 				fs.writeFile('./controllers/chatHistory/historyChat.json', JSON.stringify(history, null, 4) ); 
-				io.emit('msg_receiver', history);
+				chatSocket.emit('msg_receiver', history);
 			});
 			return;
 
 		}	
 	},
-	'disconnect' : function(io, socket, fs){
+	'disconnect' : function(chatSocket, socket, fs){
 		var index = userConnected.indexOf(socket.client.conn.nickname);
 		if (index > -1) {
 			userConnected.splice(index, 1);
 		}
-		io.emit('users_chat_list', userConnected);
+		chatSocket.emit('users_chat_list', userConnected);
 	}
 };
 /*----------------------helper function-------------------*/
