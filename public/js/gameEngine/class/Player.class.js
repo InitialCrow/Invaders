@@ -54,28 +54,29 @@ class Player{
 		document.addEventListener('keydown',this.keyBoard.keydown, false);
 		document.addEventListener('keyup',this.keyBoard.keyup, false);
 	}
-
-	drawIt(){
+	drawIt(ctx){
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.x, this.y, this.width, this.height);
 
 	}
-	move(){
+	move(obj){
 		if(this.keyBoard.left === true){
-			this.x -=3;
-			socket.emit('move',this);
+			
+			obj.body.state.pos.x -=3;
+		
+			// socket.emit('move',this);
 		}
 		if(this.keyBoard.right === true){
-			this.x +=3;
-			socket.emit('move',this);
+			obj.body.state.pos.x +=3;
+			// socket.emit('move',this);
 		}
 		if(this.keyBoard.up === true){
-			this.y -=3;
-			socket.emit('move',this);
+			obj.body.state.pos.y -=3;
+			// socket.emit('move',this);
 		}
 		if(this.keyBoard.down === true){
-			this.y +=3;
-			socket.emit('move',this);
+			obj.body.state.pos.y +=3;
+			// socket.emit('move',this);
 		}
 	}
 

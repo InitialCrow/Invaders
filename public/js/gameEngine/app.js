@@ -1,13 +1,22 @@
 (function(ctx){
 	var App = {
 		debug : true,
+		canvas : document.getElementById("invaders_canvas"),
+		context :null,
 		init : function(){
+			App.canvas.height = window.innerHeight/2;
+			App.canvas.width = window.innerWidth/2;
+
+			App.context = App.canvas.getContext("2d");
+
 			if(this.debug === true){
+
 				console.log(' :::::::::::::::::: DEBUG MODE ACTIVATE :::::::::::::::::: ');
 			}
 			this.consolLog(' ---------------->    App Loaded ! ')
 			this.GameEngine.init();
 		},
+	
 		consolLog : function(msg){
 			if(this.debug === true){
 				return console.log(msg);

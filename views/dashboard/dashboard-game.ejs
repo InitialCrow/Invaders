@@ -10,15 +10,22 @@
 	<link rel="stylesheet" href="/public/css/game.css">
 </head>
 <body>
-	<h2 class="game-title">Invaders 0.0.1 (Alpha)  </h2>
-	<!-- libs -->
-	<script src="/public/js/lib/phaser.min.js"></script>
 	
-	<!-- scripts -->
-	<script src="/public/js/gameEngine/app.js"></script>
-	<script src="/public/js/gameEngine/gameEngine.js"></script>
+	<h2 class="game-title">Invaders 0.0.1 (Alpha)  </h2>
+
+	<canvas id="invaders_canvas"  > 
+		Please update your browser
+	</canvas>
+	<!-- libs -->
+	<script src="/public/js/lib/physic/physicsjs-full.min.js"></script>
 	<!-- modules -->
 	<% include ../partials/partial-socket-game %>
+	
+	<!-- scripts -->
+	<script src="/public/js/gameEngine/class/Player.class.js"></script>
+	<script src="/public/js/gameEngine/app.js"></script>
+	<script src="/public/js/gameEngine/gameEngine.js"></script>
+	
 
 	<script>
 		App.init();

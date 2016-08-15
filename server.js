@@ -21,7 +21,7 @@ var db = require('./models/Database.js');
 var mysql_use = db.mysqlDB();
 
 var initTavernSocket = false; // cant reset socket when you go another page
-
+var initGameSocket = false;
 
 
 app.use(session({
@@ -223,11 +223,19 @@ app.get('/inv/:token/friend-add/:id', function(req, res){
 app.get('/inv/:token/play', function(req, res){
         _session=req.session;
 
+
         if(_session.user){
-           DashboardController.launchGame(io,req, res, mysql_use);
+          if(initGameSocket === false){
+              DashboardController.launchGame(io,req, res, mysql_use);
+              initGameSocket = true;
+            }
+          else{
+            res.render("dashboard/dashboard-game");
+          }
+           
 
         }
-          else{
+        else{
             res.redirect("/");
         }
 })

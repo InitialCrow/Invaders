@@ -1,5 +1,7 @@
-canvas{
-	margin: 150px auto;
+#invaders_canvas{
+	left: 25%;
+	background-color: black;
+	
 }
 .game-title{
 	text-align: center;

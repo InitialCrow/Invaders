@@ -7,7 +7,7 @@ GameController.prototype = {
 		var gameSocket= io.of('/gameSocket');
 		gameSocket.on('connection', function (socket) {
                     		console.log("-> "+_session.user + " s'est connecter à une partie !");
-                    		
+                    		socket.emit('playerConnect',_session.nickname);
                     		socket.on('disconnect',function(){
                     			
                     			socket.disconnect();
