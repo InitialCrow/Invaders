@@ -1,96 +1,32 @@
-(function(ctx,$P){ // $P = PHysic
+(function(ctx,$M){ // $M = matter.js
 	var GameEngine = {
-		debug : true,
+		config : App.config,
 		game : "",
-		player : null,
-		playerReady: new Event('playerLoaded'),
 		gameReady : false,
-		world: null,
-		renderer :null,
+		physic : $M.Engine,
+		render : $M.Render,
+		world : $M.World,
+		bodies : $M.Bodies,
 		init : function(){
 			App.consolLog(' ---------------->     GameEngine Loaded !  ')
-			self.initWorld();
-			self.initPlayer();
+
+			self.player.init(); // init player
+
+			self.World.init();
 			this.update();
-			window.onload = function(e){
-				
-				
-			}
-			
-
-		},
-		initWorld : function(){
-			this.world = $P();
-			this.renderer = $P.renderer('canvas', {
-				el: 'invaders_canvas',
-				width : App.canvas.width,
-				height : App.canvas.height,
-				meta: true,
-				autoResize: false,
-			});
-			
-			this.world.add( this.renderer)
-
-			App.consolLog(' ------------------>  Game World Loaded!');
-
-		},
-	
-		initPlayer : function(){
-			socket.on('playerConnect',function(nickname){
-				var codeDone = false;
-				self.player = new Player(nickname, 50,50,50,50,'#0fffff',81,90,68,83);
-				self.player.body = $P.body('rectangle',{
-					x: self.player.x,
-					y: self.player.y,
-					vx:0,
-					vy:0,
-					width: self.player.width,
-					height: self.player.height,
-					styles: {
-						fillStyle: self.player.color,
-					    }
-				})
-				self.world.add(self.player.body);
-
-				App.consolLog(self.player);
-				
-				
-				codeDone = true;
-				if(codeDone == true){
-					document.dispatchEvent(self.playerReady);
-				}
-
-
-				
-			});
 		},
 		update : function(){
-
-			document.addEventListener('playerLoaded', function(){
-				self.world.render();
-				self.gameReady = true;
-
-			})
-			$P.util.ticker.on(function( time, dt ){
-				self.world.step( time );
-			});			
-			$P.util.ticker.start();
-			self.world.on('step', function(){
-				if(self.gameReady === true){
-					self.world.render();
-			   		self.player.move(self.player);
-				}
-			   	
-			   	
-			});
-		
 			
-			
-			
+			window.requestAnimationFrame(self.update);
+			self.physic.update(self.World.engine, 1000 / 60);
+			if(self.gameReady === true){
+				self.player.player.move(self.player.player, self.config.player.speed);
+				self.player.player.x = self.player.player.body.position.x;
+				self.player.player.y = self.player.player.body.position.y;
+			}
 		}
 
-		
 	}
 	ctx.GameEngine = GameEngine;
 	var self = GameEngine;
-})(App, Physics);
+})(App, Matter);

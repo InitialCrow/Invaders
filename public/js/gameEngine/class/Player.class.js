@@ -1,4 +1,4 @@
-class Player{
+class PlayerClass{
 	constructor(name,w,h,x,y,color,key_l,key_u,key_r,key_d){
 		var self = this;
 		this.name = name;
@@ -59,23 +59,23 @@ class Player{
 		ctx.fillRect(this.x, this.y, this.width, this.height);
 
 	}
-	move(obj){
+	move(obj, v){
+
 		if(this.keyBoard.left === true){
-			
-			obj.body.state.pos.x -=3;
-		
+			obj.body.position.x -=v;
+
 			// socket.emit('move',this);
 		}
 		if(this.keyBoard.right === true){
-			obj.body.state.pos.x +=3;
+			obj.body.position.x +=v;
 			// socket.emit('move',this);
 		}
 		if(this.keyBoard.up === true){
-			obj.body.state.pos.y -=3;
+			obj.body.position.y -=v;
 			// socket.emit('move',this);
 		}
 		if(this.keyBoard.down === true){
-			obj.body.state.pos.y +=3;
+			obj.body.position.y +=v;
 			// socket.emit('move',this);
 		}
 	}
