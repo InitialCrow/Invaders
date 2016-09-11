@@ -7,7 +7,8 @@
 		jump : App.GameEngine.config.player.jump,
 		player : null,
 		fire : false,
-		bullet : null,
+		bullet :null,
+		
 		eventMouse : {
 			'mousedown':false,
 			'mouseup':false,
@@ -105,6 +106,8 @@
 					if(App.GameEngine.World.engine.world.bodies[i].label === "bullet"){
 						self.bullet = App.GameEngine.World.engine.world.bodies[i];
 						
+						
+						
 					}
 				}
 				self.bullet.position.x +=5;
@@ -113,17 +116,24 @@
 		},
 		initBullet: function(){
 
-			
+
 			$M.Events.on(App.GameEngine.World.engine, "collisionStart", function(evt){
-				//kill bullet when is collide
-				for(var i =0 ; i< App.GameEngine.World.engine.world.bodies.length; i++){
-					if(App.GameEngine.World.engine.world.bodies[i].label === 'bullet'){
-						App.GameEngine.World.engine.world.bodies.splice(App.GameEngine.World.engine.world.bodies.indexOf(App.GameEngine.World.engine.world.bodies[i]),1)
-						break;
-					}
+				
+				if(evt.pairs[0].bodyA.label ==="bullet" || evt.pairs[0].bodyB.label === 'bullet'){
+					for(var j =0 ; j< App.GameEngine.World.engine.world.bodies.length; j++){
+						if(App.GameEngine.World.engine.world.bodies[j].label === 'bullet'){
+							
+							App.GameEngine.World.engine.world.bodies.splice(App.GameEngine.World.engine.world.bodies.indexOf(App.GameEngine.World.engine.world.bodies[j]),1)
+							self.bullet = null;
+							break;
+							
+						}
 					
+					}
 				}
+
 			})
+
 		},
 	}
 	ctx.Player = Player;
