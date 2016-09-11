@@ -1,6 +1,6 @@
 (function(ctx){
 	var config = {
-		// set params of canvas	
+		// set params of canvas	2
 		'render' : {
 			size : {
 				'width' : window.innerWidth/2,
