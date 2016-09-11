@@ -80,16 +80,16 @@ HomeController.prototype = {
 				_session.user = login;
 				_session.nickname = nickname;
 				_session.token = token;
-				_session.home_url = 'http://192.168.0.44:8000/inv'+token;
+				_session.home_url = 'http://localhost:8000/inv'+token;
 				mysql_use.query("select id from users where users.login ='"+login+"'",function(err, result, field){
-					_session.user_id = result[0];
+					_session.user_id = result[0].id;
 					res.send([true,token]);
 					console.log(login +' was subscribe ! confirm mailsending to ... '+email);
 				
 					var mail ={
 						to : email,
 						subject : 'Invaders-game Confirm your email',
-						html : "<head><style>body{font-family : verdana;}</style></head><body><h1> Welcome " +login+" </h1><p>you need confim your email for join the battle <a href =http://192.168.0.44:8000"+url+"/confirm_email/"+token+"> click here</a> to confirm </p></body>"
+						html : "<head><style>body{font-family : verdana;}</style></head><body><h1> Welcome " +login+" </h1><p>you need confim your email for join the battle <a href =http://localhost:8000"+url+"/confirm_email/"+token+"> click here</a> to confirm </p></body>"
 					};
 					mailer.sendNodemailer('smtp',mail.to,mail.subject,mail.html);// type send, to, subject, html
 					res.end();

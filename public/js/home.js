@@ -20,30 +20,33 @@
 
 			  })   
 			this.chooseForm();
+			this.ajaxSubmit();
 		},
 		chooseForm : function(){
 			var $login_btn = $(".login-choose");
 			var $sign_btn =$(".sign-choose");
 			var $page_form = $('.page-form');
+			var login_ready =false;
+			var sign_ready = false;
 			var $swiper = $('.swiper-container');
-
 			$login_btn.on('click',function(){
+				
 				$swiper.fadeOut(400);
 				setTimeout(function(){
 					$page_form.fadeIn(500);
 					
 				},600);
-
+			
 				self.showForm('log');
-				self.ajaxSubmit();
+				
 			});
 			$sign_btn.on('click',function(){
+			
 				$swiper.fadeOut(400);
 				setTimeout(function(){
 					$page_form.fadeIn(500);
 				},600);
 				self.showForm('sign');
-				self.ajaxSubmit();	
 			});
 		},
 		// sign form or log form typeOfForm = sign || log
@@ -52,6 +55,7 @@
 			var $form = $('.form');
 			var $alert = $('.alert');
 			var url = window.location.href;
+			$form.empty();
 			var log_form = "<label for=\"login\">login</label><input class=\"form-control login\" name=\"login\" type=\"text\"  required/><label for=\"pasword\">password</label><input type=\"password\"class=\"form-control password\" name=\"password\" required /><button type=\"submit\" class=\"btn btn-success login-button\">login</button>";
 			
 			var sign_form = "<label for=\"login\">Enter your login connection</label><input class=\"form-control login\" name=\"login\" type=\"text\"  required/><label for=\"pasword\">Enter your password here</label><input type=\"password\"class=\"form-control password\" name=\"password\" required /><label for=\"email\">Enter your email</label><input type=\"email\" name=\"email\" class=\"email form-control\" required/><label for=\"nickname\">Enter your in game nickname</label><input type=\"text\" name=\"nickname\" class=\"form-control nickname\"  required/><button  class=\"btn btn-success sign-button\">sign in</button>";
@@ -61,6 +65,7 @@
 				$form.empty();
 				$form.attr('action',url+'log');
 				$form.addClass('log-form');
+				$form.removeClass('sign-form');
 				$form.append(log_form);
 				
 			}
@@ -69,6 +74,7 @@
 				$form.empty();
 				$form.attr('action',url+'sign');
 				$form.addClass('sign-form');
+				$form.removeClass('log-form');
 				$form.append(sign_form);
 				
 			}
@@ -77,12 +83,12 @@
 			});
 		},
 		ajaxSubmit : function(){
-			var $form = $('.form');
-			var $alert = $(".alert");
 
-			 if($form.attr('data-type') === 'sign'){
-			 	$form.on('submit',function(evt){
-			 		evt.preventDefault();
+			$('form').on('submit',function(evt){
+			 	evt.preventDefault();
+			 	var $alert = $(".alert");
+				var $form = $('form');
+			 	if($form.attr('data-type') === 'sign'){
 			 		if(self.secureForm($form)){
 			 			$.ajax({
 			 			url: $form.attr('action'),
@@ -90,6 +96,7 @@
 			 			data : $form.serialize(),	
 			 			success : function(res){
 			 				if(res[0] === true){
+			 					console.log(res);
 			 					window.location.replace('inv/'+res[1]);
 			 				}
 			 				else{
@@ -112,15 +119,9 @@
 			 				}
 			 			})
 			 		}
-
-			 	});
-			 }
-
-
-			if($form.attr('data-type') === 'log'){
-				$form.on('submit',function(evt){
-					evt.preventDefault();
-					if(self.secureForm($form)){
+			 	}	
+			 	else if($form.attr('data-type') === 'log'){
+			 		if(self.secureForm($form)){
 						$.ajax({
 							url: $form.attr('action'),
 							method : $form.attr('method'),
@@ -143,8 +144,39 @@
 							}
 						});
 					}
-				});
-			}
+			 	}
+			 });
+			
+
+
+			// if($form.attr('data-type') === 'log'){
+			// 	$form.on('submit',function(evt){
+			// 		evt.preventDefault();
+			// 		if(self.secureForm($form)){
+			// 			$.ajax({
+			// 				url: $form.attr('action'),
+			// 				method : $form.attr('method'),
+			// 				data : $form.serialize(),	
+			// 				success : function(res){
+			// 					if(res[0] != false){
+									
+			// 						sessionStorage.setItem('user', res.user);
+
+			// 						document.location.href= res.url;
+
+			// 					}
+			// 					else{
+			// 						$alert.empty();
+			// 						$alert.append(res[1]).fadeIn(500).removeClass('hidden');
+			// 					}
+			// 				},
+			// 				error : function(res){
+			// 					alert('sorry bug ajax try update your browser or contact me');
+			// 				}
+			// 			});
+			// 		}
+			// 	});
+			// }
 		},
 		secureForm : function(form){
 			var $form_secure = form;

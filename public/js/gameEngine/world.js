@@ -52,7 +52,7 @@
 				});
 			}
 			else{
-				this.renderer = App.GameEngine.create({
+				this.renderer = App.GameEngine.render.create({
 					element : document.body,
 					engine : self.engine,
 					context : '2d',
@@ -91,19 +91,35 @@
 			// when player is ready we add player to the world
 			document.addEventListener('playerLoaded', function(){
 				App.consolLog(' --------------------> player Loaded !');
-				App.GameEngine.world.add(self.engine.world,[App.GameEngine.player.player.body])
+				App.GameEngine.world.add(self.engine.world,[App.GameEngine.Player.player.body])
 				App.GameEngine.render.run(self.renderer);
 				App.GameEngine.gameReady = true;
 				App.consolLog(' ~~~~~~~~~~~~~~~~ OBJECT LOGS ~~~~~~~~~~~~');
-				App.consolLog('1 : player, 2: engine');
-				App.consolLog(App.GameEngine.player);
+				App.consolLog('1: player, 2: engine, 3: map');
+				App.consolLog(App.GameEngine.Player);
 				App.consolLog(self.engine);
+				App.consolLog(App.GameEngine.Map);
 				App.consolLog(' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 				App.consolLog(' ::::::::::::::::::::::Game IS Ready!:::::::::::::::::::::::::::');
 
 			})
 			App.consolLog(' ------------------>  Game World Loaded!');	
 		},
+		gravitySimulator : function(obj, x, y, reverse){
+			var reverse = reverse
+			if( reverse === false ){
+				for (var i =0; i<obj.length; i++){
+					obj[i].positionImpulse.y += y;
+					obj[i].positionImpulse.x += x;
+				}
+			}
+			else{
+				for (var i =0; i<obj.length; i++){
+					obj[i].positionImpulse.y -= y;
+					obj[i].positionImpulse.x -= x;
+				}
+			}			
+		}
 	}
 	ctx.World = World;
 	var self = World;

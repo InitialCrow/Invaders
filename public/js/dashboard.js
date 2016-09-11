@@ -27,14 +27,17 @@
 				var $profile_text = $('.profile-text');
 				var $news_profile = $('.news-profile');
 				var $avatar = $('.profile-img');
+				
 				var dataKeeper = {
-					'original_presentation' : $profile_text[0].outerText.trim(),
+					'original_presentation' : $profile_text[0].innerText.trim(),
 					'original_avatar' : $avatar.attr('src'),
 				};
 
+
+
 			
 				if(update_mode === false){
-				
+					console.log(dataKeeper )
 					// update mode enable
 					update_mode  = true;
 					

@@ -124,7 +124,7 @@ ProfileController.prototype = {
 	
 		
 
-		var updateQuery = "UPDATE Invaders.profiles SET presentation ='"+profile_presentation+"' WHERE profiles.user_id ='"+_session.user_id+"';";
+		var updateQuery = "UPDATE Invaders.profiles SET presentation='"+profile_presentation+"' WHERE profiles.user_id="+_session.user_id+";";
 		mysql_use.query(updateQuery, function(){
 			res.redirect('/inv/'+_session.token+'/profile');
 		});

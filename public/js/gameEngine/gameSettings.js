@@ -16,10 +16,14 @@
 		},
 		// set params of world
 		'world' : {
-			gravity : {
+			gravity : { // bug when youse gravity so use own gravity
 				'x':0,
 				'y':0
 			},
+			ownGravity : {
+				'x':0,
+				'y':1
+			}
 		},
 		// set params of player
 		'player' : {
@@ -29,17 +33,23 @@
 			},
 			body : {
 				'density': 1.0, 
-				'friction': 0.0, 
-				'restitution': 0.8,
-				'mass' : 0.8,
+				'friction': 0, 
+				'restitution': 0,
+				'mass' : 1,
 			},
 			input : {
 				'left':81,//q
 				'up':90,//z
 				'right':68,//d
 				'down':83,//s
+				'jump' : 32, //space
 			},
-			speed: 0.2,
+			ammo : 500,
+			life : 5,
+			weapon : 'gun',
+			speed: 1,
+			jump : 30,
+			canJump : 600,
 
 		}
 	}
