@@ -51,6 +51,10 @@
 			jump : 30,
 			canJump : 600,
 
+
+		},
+		'bullet' : {
+			speed :5,
 		}
 	}
 	ctx.config = config;

@@ -2,9 +2,7 @@
 
 Invaders project : node js project multiplayer game
 
-rules :  dodge mobs for survive, you can use dash'skill push other player on mobs
-	collect the most gold as you can
-	after one wave we have the shop for purshase skill or items
+rules :  shoot them up online kill zombies for survie and Make a success of all the riddles of the map win to increase your stuff and reach up to the boss without dying
 
 =============== Relase note =======================
 
@@ -38,24 +36,29 @@ this is release path for the game :
 		       |
 		       |
 		       |
-	- CREATE PLAYER LOG SYSTEM *
-	- CREATE MOB
-	- CREATE GAME ENGINE
+	- CREATE GAME ENGINE x
+	- CREATE MAP x
+	- CREATE PLAYER x
+	- CREATE WEAPON x
+	- CREATE MOB *
 	- PLAYER SKILL
 
 ----------------------- 0.0.5
 		       |
 		       |
 		       |
-	- FIRST ALPHA PLAYABLE
 	- ADD WAVE SYSTEM
+	- CREATE STAGES
+	- FIRST ALPHA PLAYABLE
 
 ----------------------- 0.0.6
 		       |
 		       |
 		       |
-	- PREVIOUS FIX
+	- CREATE PLAYER LOG SYSTEM
+	- UPGRADE GAME TO MULTIPLAYER 
 	- UPGRADE GAME ENGINE
+	- PREVIOUS FIX
 	- ADD NEW WAVE
 
 ----------------------- 0.0.7

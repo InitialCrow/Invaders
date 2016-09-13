@@ -7,7 +7,17 @@
 		jump : App.GameEngine.config.player.jump,
 		player : null,
 		fire : false,
-		bullet :null,
+		bullet :{
+			body:null,
+			speed: App.GameEngine.config.bullet.speed,
+			aimDest : {
+				x : null,
+				y : null,
+				left : false,
+				up : false,
+			},
+		},
+	
 		
 		eventMouse : {
 			'mousedown':false,
@@ -46,14 +56,38 @@
 			});
 		},
 		initWeapon : function(){
-			document.addEventListener('mousedown', self.mousedown)
-			document.addEventListener('mouseup',self.mouseup)
+			App.GameEngine.World.renderer.canvas.addEventListener('mousedown', self.mousedown)
+			App.GameEngine.World.renderer.canvas.addEventListener('mouseup',self.mouseup)
 			
 		},
-		mousedown : function(){
+		getMousePos : function(canvas, evt) { // helper function to get mouse pos on canvas
+			var rect = canvas.getBoundingClientRect();
+			return {
+				x: evt.clientX - rect.left,
+				y: evt.clientY - rect.top
+			}
+		},
+
+		mousedown : function(evt){
 			self.eventMouse.mousedown = true;
 			self.fire = true;
 			self.eventMouse.mouseup = false;
+			self.bullet.aimDest = self.getMousePos(this, evt);
+			if(self.bullet.aimDest.x < self.player.body.position.x ){
+				self.bullet.aimDest.left = true;
+			}
+			else{
+				self.bullet.aimDest.left = false;
+			}
+			if(self.bullet.aimDest.y < self.player.body.position.y){
+				self.bullet.aimDest.up = true;
+
+			}
+			else{
+				self.bullet.aimDest.up = false;	
+			}
+
+			
 		},
 		mouseup : function(){
 			self.eventMouse.mouseup = true;
@@ -104,13 +138,31 @@
 				]);
 				for(var i =0; i<App.GameEngine.World.engine.world.bodies.length; i++){
 					if(App.GameEngine.World.engine.world.bodies[i].label === "bullet"){
-						self.bullet = App.GameEngine.World.engine.world.bodies[i];
+						self.bullet.body = App.GameEngine.World.engine.world.bodies[i];
 						
 						
 						
 					}
 				}
-				self.bullet.position.x +=5;
+				if(self.bullet.aimDest.left === true ){
+				
+					self.bullet.body.position.x  -= Math.cos(Math.atan2(self.bullet.aimDest.x - self.bullet.body.position.x, self.bullet.aimDest.y - self.bullet.body.position.y)+ Math.PI/2)*self.bullet.speed;
+					
+					
+				}
+				else{
+					self.bullet.body.position.x  += Math.cos(Math.atan2(self.bullet.aimDest.x - self.bullet.body.position.x, self.bullet.aimDest.y - self.bullet.body.position.y)- Math.PI/2)*self.bullet.speed;
+					
+				}
+				if( self.bullet.aimDest.up === true ){
+					self.bullet.body.position.y  -= Math.sin(Math.atan2(self.bullet.aimDest.x - self.bullet.body.position.x, self.bullet.aimDest.y - self.bullet.body.position.y)- Math.PI/2)*self.bullet.speed;
+					
+				}
+				else{
+					self.bullet.body.position.y  += Math.sin(Math.atan2(self.bullet.aimDest.x - self.bullet.body.position.x, self.bullet.aimDest.y - self.bullet.body.position.y)+Math.PI/2)*self.bullet.speed;
+
+				}	
+
 				
 			}	
 		},
@@ -124,7 +176,7 @@
 						if(App.GameEngine.World.engine.world.bodies[j].label === 'bullet'){
 							
 							App.GameEngine.World.engine.world.bodies.splice(App.GameEngine.World.engine.world.bodies.indexOf(App.GameEngine.World.engine.world.bodies[j]),1)
-							self.bullet = null;
+							self.bullet.body = null;
 							break;
 							
 						}
