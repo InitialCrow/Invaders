@@ -16,6 +16,11 @@
 			this.consolLog(' ---------------->    App Loaded ! ')
 			this.GameEngine.init();
 		},
+		getRandomInt : function(min, max) {
+		  min = Math.ceil(min);
+		  max = Math.floor(max);
+		  return Math.floor(Math.random() * (max - min)) + min;
+		},
 	
 		consolLog : function(msg){
 			if(this.debug === true){

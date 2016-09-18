@@ -55,7 +55,26 @@
 		},
 		'bullet' : {
 			speed :5,
-		}
+		},
+		'mob':{
+			type1 : {
+				'life' : 100,
+				'width': 20,
+				'height' : 20,
+				'x' : 50,
+				'y':50,
+				'color': 'yellow',
+				'name' : 'type1',
+				'speed' : 0.08,
+
+				body : {
+					'density': 1.0, 
+					'friction': 0, 
+					'restitution': 0,
+					'mass' : 1,
+				},
+			}
+		},
 	}
 	ctx.config = config;
 })(App);

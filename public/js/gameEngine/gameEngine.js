@@ -15,7 +15,43 @@
 			self.World.init();
 			self.Player.init(); // init player
 			self.Map.init();
+			self.Mob.init();
+			this.collider();
 			this.update();
+		},
+		collider: function(){
+			$M.Events.on(App.GameEngine.World.engine, "collisionStart", function(evt){
+				
+				if(evt.pairs[0].bodyA.label ==="bullet"){
+					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyA)
+					
+					self.Player.bullet.body = null;
+				}
+				if(evt.pairs[0].bodyB.label === 'bullet'){
+
+					// App.GameEngine.World.engine.world.bodies.splice(App.GameEngine.World.engine.world.bodies.indexOf(evt.pairs[0].bodyB),1)
+					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyB)
+					self.Player.bullet.body = null;
+
+				}
+
+				if( (evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === self.Player.player.body.label) || (evt.pairs[0].bodyA.label ===self.Player.player.body.label && evt.pairs[0].bodyB.label === "type1") ){
+					
+					console.log(self.Player.player.body.label +" se fait attaké")	
+					
+				}
+				if( evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === 'bullet') {
+
+					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyA)
+					
+				}
+				if (evt.pairs[0].bodyA.label ==='bullet' && evt.pairs[0].bodyB.label === "type1" ){
+
+					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyB)
+				}
+
+			})
+
 		},
 		update : function(){
 			
@@ -29,8 +65,12 @@
 				self.Player.player.x = self.Player.player.body.position.x;
 				self.Player.player.y = self.Player.player.body.position.y;
 
+
 				self.Player.choseWeapon(self.Player.weapon);
+				if(App.GameEngine.Mob.pool !== null){
+					App.GameEngine.Mob.aggro(self.Player.player, [self.Mob.pool])
 					
+				}	
 			}
 		}
 

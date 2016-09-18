@@ -14,10 +14,10 @@
 			
 				App.consolLog(' --------------------> 4 player patern !');
 				App.GameEngine.world.add(App.GameEngine.World.engine.world, [
-					App.GameEngine.bodies.rectangle(window.innerWidth/4,0, 10,window.innerHeight/2 ,{ isStatic: true }),
-					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true }),
-					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/2 , 10,window.innerHeight/2 ,{ isStatic: true }),
-					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/4,0, 10,window.innerHeight/2 ,{ isStatic: true, collisionFilter :{group:-1} }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true, collisionFilter :{group:-1} }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/2 , 10,window.innerHeight/2 ,{ isStatic: true, collisionFilter :{group:-1} }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true, collisionFilter :{group:-1} }),
 				]);
 			}
 			
@@ -25,9 +25,9 @@
 			if(this.numberOfPlayer === 3){
 				App.consolLog(' --------------------> 3 player patern !');
 				App.GameEngine.world.add(App.GameEngine.World.engine.world, [
-					App.GameEngine.bodies.rectangle(window.innerWidth/4,0, 10,window.innerHeight/2 ,{ isStatic: true }),
-					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true }),
-					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/4,0, 10,window.innerHeight/2 ,{ isStatic: true , collisionFilter :{group:-1}}),
+					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true , collisionFilter :{group:-1}}),
+					App.GameEngine.bodies.rectangle(window.innerWidth/4,window.innerHeight/4 , window.innerWidth/2,10,{ isStatic: true , collisionFilter :{group:-1}}),
 				]);
 			}
 			// start patern for 2 player 
@@ -35,7 +35,7 @@
 				App.consolLog(' --------------------> 2 player patern !');
 				App.GameEngine.world.add(App.GameEngine.World.engine.world, [
 					
-					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth,10,{ isStatic: true }),
+					App.GameEngine.bodies.rectangle(window.innerWidth/2,window.innerHeight/4 , window.innerWidth,10,{ isStatic: true, collisionFilter :{group:-1} }),
 
 				]);
 			}

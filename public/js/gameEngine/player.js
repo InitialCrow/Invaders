@@ -27,7 +27,6 @@
 		init : function(){
 			self.initPlayer();
 			self.initWeapon();
-			self.initBullet();
 		},
 		initPlayer : function(){
 			socket.on('playerConnect',function(nickname){
@@ -39,7 +38,7 @@
 					         fillStyle: self.player.color,
 					    },
 
-					collisionFilter :{group:-1},
+					collisionFilter :{group:-2},
 					label : self.player.name,
 					density: App.GameEngine.config.player.body.density, 
 					friction: App.GameEngine.config.player.body.friction, 
@@ -133,7 +132,7 @@
 						sleepThreshold : 0,
 						label : 'bullet',
 						timeScale: 0,
-						collisionFilter :{group:-1}
+						collisionFilter :{group:-2}
 					}),
 				]);
 				for(var i =0; i<App.GameEngine.World.engine.world.bodies.length; i++){
@@ -166,27 +165,7 @@
 				
 			}	
 		},
-		initBullet: function(){
-
-
-			$M.Events.on(App.GameEngine.World.engine, "collisionStart", function(evt){
-				
-				if(evt.pairs[0].bodyA.label ==="bullet" || evt.pairs[0].bodyB.label === 'bullet'){
-					for(var j =0 ; j< App.GameEngine.World.engine.world.bodies.length; j++){
-						if(App.GameEngine.World.engine.world.bodies[j].label === 'bullet'){
-							
-							App.GameEngine.World.engine.world.bodies.splice(App.GameEngine.World.engine.world.bodies.indexOf(App.GameEngine.World.engine.world.bodies[j]),1)
-							self.bullet.body = null;
-							break;
-							
-						}
-					
-					}
-				}
-
-			})
-
-		},
+		
 	}
 	ctx.Player = Player;
 	var self = Player;

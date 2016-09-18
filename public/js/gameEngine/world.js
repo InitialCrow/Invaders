@@ -10,10 +10,10 @@
 			//set physic border to the canvas
 		
 			App.GameEngine.world.add(this.engine.world, [
-				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width, -App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.width*2,50, { isStatic: true }),
-				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width, App.GameEngine.config.render.border.height+App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.width*2, 50, { isStatic: true }),
-				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width +App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.height, 50, App.GameEngine.config.render.border.height*2, { isStatic: true }),
-				App.GameEngine.bodies.rectangle(-App.GameEngine.config.render.border.offset,  App.GameEngine.config.render.border.height, 50,  App.GameEngine.config.render.border.height*2, { isStatic: true })
+				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width, -App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.width*2,50, { isStatic: true, collisionFilter :{group:-1} }),
+				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width, App.GameEngine.config.render.border.height+App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.width*2, 50, { isStatic: true, collisionFilter :{group:-1} }),
+				App.GameEngine.bodies.rectangle(App.GameEngine.config.render.border.width +App.GameEngine.config.render.border.offset, App.GameEngine.config.render.border.height, 50, App.GameEngine.config.render.border.height*2, { isStatic: true, collisionFilter :{group:-1} }),
+				App.GameEngine.bodies.rectangle(-App.GameEngine.config.render.border.offset,  App.GameEngine.config.render.border.height, 50,  App.GameEngine.config.render.border.height*2, { isStatic: true, collisionFilter :{group:-1} })
 			]);
 
 			// init renderer
@@ -95,10 +95,11 @@
 				App.GameEngine.render.run(self.renderer);
 				App.GameEngine.gameReady = true;
 				App.consolLog(' ~~~~~~~~~~~~~~~~ OBJECT LOGS ~~~~~~~~~~~~');
-				App.consolLog('1: player, 2: engine, 3: map');
+				App.consolLog('1: player, 2: engine, 3: map, 4: mob');
 				App.consolLog(App.GameEngine.Player);
 				App.consolLog(self.engine);
 				App.consolLog(App.GameEngine.Map);
+				App.consolLog(App.GameEngine.Mob);
 				App.consolLog(' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 				App.consolLog(' ::::::::::::::::::::::Game IS Ready!:::::::::::::::::::::::::::');
 
