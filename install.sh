@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-USERNAME='phpmyadmin'
-PASSWORD='0000'
+USERNAME='root'
+PASSWORD=''
 DBNAME='Invaders'
 HOST='localhost'
 

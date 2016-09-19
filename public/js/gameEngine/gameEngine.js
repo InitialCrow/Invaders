@@ -35,19 +35,28 @@
 
 				}
 
-				if( (evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === self.Player.player.body.label) || (evt.pairs[0].bodyA.label ===self.Player.player.body.label && evt.pairs[0].bodyB.label === "type1") ){
+				if( (evt.pairs[0].bodyA.label ==="type1"  && evt.pairs[0].bodyB.label === self.Player.player.body.label) || (evt.pairs[0].bodyA.label ===self.Player.player.body.label && evt.pairs[0].bodyB.label === "type1") ||(evt.pairs[0].bodyA.label ==="type2"  && evt.pairs[0].bodyB.label === self.Player.player.body.label )||(evt.pairs[0].bodyA.label ===self.Player.player.body.label && evt.pairs[0].bodyB.label === "type2")){
 					
 					console.log(self.Player.player.body.label +" se fait attaké")	
 					
 				}
-				if( evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === 'bullet') {
+				if( (evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === 'bullet')|| (evt.pairs[0].bodyA.label ==="type2" && evt.pairs[0].bodyB.label === 'bullet')) {
+					evt.pairs[0].bodyA.life = evt.pairs[0].bodyA.life - evt.pairs[0].bodyB.hit;
+					if(evt.pairs[0].bodyA.life <= 0 ){
 
-					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyA)
+						App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyA)
+					}
+
+					
 					
 				}
-				if (evt.pairs[0].bodyA.label ==='bullet' && evt.pairs[0].bodyB.label === "type1" ){
+				if ((evt.pairs[0].bodyA.label ==='bullet' && evt.pairs[0].bodyB.label === "type1" )||(evt.pairs[0].bodyA.label ==="bullet" && evt.pairs[0].bodyB.label === 'type2')){
+					evt.pairs[0].bodyB.life = evt.pairs[0].bodyB.life - evt.pairs[0].bodyA.hit;
+					if(evt.pairs[0].bodyB.life <= 0 ){
+						App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyB)
+					}
+					
 
-					App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyB)
 				}
 
 			})
@@ -68,7 +77,7 @@
 
 				self.Player.choseWeapon(self.Player.weapon);
 				if(App.GameEngine.Mob.pool !== null){
-					App.GameEngine.Mob.aggro(self.Player.player, [self.Mob.pool])
+					App.GameEngine.Mob.aggro(self.Player.player, self.Mob.pool)
 					
 				}	
 			}

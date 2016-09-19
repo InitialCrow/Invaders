@@ -8,6 +8,7 @@
 		player : null,
 		fire : false,
 		bullet :{
+			hit:null,
 			body:null,
 			speed: App.GameEngine.config.bullet.speed,
 			aimDest : {
@@ -96,6 +97,7 @@
 			var weapon = weapon || 'gun';
 			var gunMode = false;
 			if(weapon === 'gun'){
+				self.bullet.hit = App.GameEngine.config.player.hit.gun;
 				 gunMode = true;
 				if(self.eventMouse.mousedown === true && self.fire === true && self.eventMouse.mouseup === false){
 					self.fire = true;
@@ -104,6 +106,7 @@
 				}
 			}
 			if(weapon === 'smg'){
+				self.bullet.hit = App.GameEngine.config.player.hit.smg;
 				if(self.eventMouse.mousedown === true && self.fire === true){
 					self.fire = true;
 					
@@ -138,6 +141,7 @@
 				for(var i =0; i<App.GameEngine.World.engine.world.bodies.length; i++){
 					if(App.GameEngine.World.engine.world.bodies[i].label === "bullet"){
 						self.bullet.body = App.GameEngine.World.engine.world.bodies[i];
+						self.bullet.body.hit = self.bullet.hit;
 						
 						
 						

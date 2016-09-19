@@ -47,6 +47,10 @@
 			ammo : 500,
 			life : 5,
 			weapon : 'gun',
+			hit : {
+				gun : 100,
+				smg : 25,
+			},
 			speed: 1,
 			jump : 30,
 			canJump : 600,
@@ -66,6 +70,23 @@
 				'color': 'yellow',
 				'name' : 'type1',
 				'speed' : 0.08,
+
+				body : {
+					'density': 1.0, 
+					'friction': 0, 
+					'restitution': 0,
+					'mass' : 1,
+				},
+			},
+			type2 : {
+				'life' : 200,
+				'width': 50,
+				'height' : 50,
+				'x' : 50,
+				'y':50,
+				'color': 'red',
+				'name' : 'type2',
+				'speed' : 0.5,
 
 				body : {
 					'density': 1.0, 
