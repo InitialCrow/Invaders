@@ -5,8 +5,8 @@ Database.prototype.mysqlDB = function() {
 	if(this.mysql){
 		var mysql_use = this.mysql.createConnection({
 			host     : 'localhost',
-			user     : 'root',
-			password : '',
+			user     : 'phpmyadmin',
+			password : '0000',
 			database : 'Invaders'
 		});
 		
@@ -14,6 +14,7 @@ Database.prototype.mysqlDB = function() {
 			if(!err) {
 			    console.log("Database is connected ... nn");    
 			}else {
+				console.log(err);
 			    console.log("Error connecting database ... nn");    
 			}
 		});
