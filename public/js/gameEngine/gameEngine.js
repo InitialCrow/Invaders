@@ -7,6 +7,9 @@
 		render : $M.Render,
 		world : $M.World,
 		bodies : $M.Bodies,
+		timer : 0,
+		dieCounter : 0,
+
 		init : function(){
 			App.consolLog(' ---------------->     GameEngine Loaded !  ')
 
@@ -17,7 +20,55 @@
 			self.Map.init();
 			self.Mob.init();
 			this.collider();
+			self.displayer('1rst wave is comming');
 			this.update();
+		},
+		stater : {
+
+			state1 : {
+				initied : false,
+				goaled : false,
+				msg : [
+					'1rst wave is comming',
+				],
+
+
+
+			},
+			init : function(){
+				self.timer++; // timer use request anim frame
+				if(App.debug === true){
+					// console.log('timer : '+self.timer);	
+				}
+
+				
+				if(self.timer > self.config.stater.state1.time && this.state1.initied === false ){
+					console.log('spawing 1 ')
+					self.Mob.spawn(['type1', 'type2'], [8,2]);
+					self.displayer('');
+					this.state1.initied = true;
+					
+					return;
+				}
+				if(self.dieCounter === self.config.stater.state1.goal && this.state1.initied === true && this.state1.goaled === false ){
+						self.displayer('wave1 clear');
+						this.state1.goaled = true;
+						
+						return
+					}
+				
+
+			}
+		},
+		displayer : function(msg){	
+			var displayer = document.getElementsByClassName('game-instruction');
+			displayer[0].innerHTML = "<p>"+msg+"</p>";
+			window.setTimeout(function(){
+				displayer[0].innerHTML = "";
+			},5000);
+			
+			console.log(displayer);
+
 		},
 		collider: function(){
 			$M.Events.on(App.GameEngine.World.engine, "collisionStart", function(evt){
@@ -43,7 +94,7 @@
 				if( (evt.pairs[0].bodyA.label ==="type1" && evt.pairs[0].bodyB.label === 'bullet')|| (evt.pairs[0].bodyA.label ==="type2" && evt.pairs[0].bodyB.label === 'bullet')) {
 					evt.pairs[0].bodyA.life = evt.pairs[0].bodyA.life - evt.pairs[0].bodyB.hit;
 					if(evt.pairs[0].bodyA.life <= 0 ){
-
+						self.dieCounter++;
 						App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyA)
 					}
 
@@ -53,6 +104,7 @@
 				if ((evt.pairs[0].bodyA.label ==='bullet' && evt.pairs[0].bodyB.label === "type1" )||(evt.pairs[0].bodyA.label ==="bullet" && evt.pairs[0].bodyB.label === 'type2')){
 					evt.pairs[0].bodyB.life = evt.pairs[0].bodyB.life - evt.pairs[0].bodyA.hit;
 					if(evt.pairs[0].bodyB.life <= 0 ){
+						self.dieCounter++;
 						App.GameEngine.world.remove(App.GameEngine.World.engine.world, evt.pairs[0].bodyB)
 					}
 					
@@ -60,7 +112,6 @@
 				}
 
 			})
-
 		},
 		update : function(){
 			
@@ -79,7 +130,8 @@
 				if(App.GameEngine.Mob.pool !== null){
 					App.GameEngine.Mob.aggro(self.Player.player, self.Mob.pool)
 					
-				}	
+				}
+				self.stater.init();
 			}
 		}
 

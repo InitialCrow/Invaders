@@ -5,7 +5,7 @@
 		init : function(){
 			App.consolLog(' --------------------> Mob Loaded !');
 			
-			this.spawn(['type1', 'type2'], [1,2]);
+			
 		},
 		initMob : function(type, speed){
 			if(type.type === 'type1'){

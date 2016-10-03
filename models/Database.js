@@ -5,8 +5,8 @@ Database.prototype.mysqlDB = function() {
 	if(this.mysql){
 		var mysql_use = this.mysql.createConnection({
 			host     : 'localhost',
-			user     : 'phpmyadmin',
-			password : '0000',
+			user     : 'root',
+			password : '',
 			database : 'Invaders'
 		});
 		

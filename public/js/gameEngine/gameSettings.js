@@ -96,6 +96,14 @@
 				},
 			}
 		},
+		'stater':{
+
+			state1 :{
+				time : 500, // time to launch state
+				goal : 10,
+			}
+			
+		},
 	}
 	ctx.config = config;
 })(App);

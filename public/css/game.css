@@ -1,4 +1,8 @@
+body{
+	position: relative;
+}
 canvas{
+
 	display: block;
 	margin : 40px auto;
 
@@ -6,4 +10,21 @@ canvas{
 }
 .game-title{
 	text-align: center;
+}
+.game-instruction{
+	animation: warn 2s infinite;
+	position :absolute;
+	top: 110%;
+	left: 45%;
+	
+
+}
+@keyframes warn{
+	0%{
+		transform: scale(1,1);
+	}
+	50%{
+		transform: scale(2,2)
+	}
+
 }
