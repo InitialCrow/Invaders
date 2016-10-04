@@ -101,6 +101,10 @@
 			state1 :{
 				time : 500, // time to launch state
 				goal : 10,
+			},
+			state2 :{
+				time : 500, // time to launch state
+				goal : 10,
 			}
 			
 		},

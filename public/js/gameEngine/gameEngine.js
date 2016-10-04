@@ -31,33 +31,51 @@
 				msg : [
 					'1rst wave is comming',
 				],
-
-
-
+			},
+			state2 : {
+				keys_body : null,
+				keys : ['blue','green', 'red','yellow'],
+				initied : false,
+				goaled : false,
+				msg : [
+					'find good keys in the right order',
+				],
+				init:function(){
+					self.state2.keys_body = self.world.add(self.World.engine.world, [self.bodies.rectangle(window.innerWidth/4,0, 10,window.innerHeight/2 ,{ isStatic: true, collisionFilter :{group:-1} })]);
+				},
 			},
 			init : function(){
 				self.timer++; // timer use request anim frame
 				if(App.debug === true){
 					// console.log('timer : '+self.timer);	
-				}
-
-				
+				}				
 				if(self.timer > self.config.stater.state1.time && this.state1.initied === false ){
 					console.log('spawing 1 ')
 					self.Mob.spawn(['type1', 'type2'], [8,2]);
-					self.displayer('');
 					this.state1.initied = true;
 					
 					return;
 				}
 				if(self.dieCounter === self.config.stater.state1.goal && this.state1.initied === true && this.state1.goaled === false ){
+						self.timer = 0;
 						self.displayer('wave1 clear');
 						this.state1.goaled = true;
 						
 						return
-					}
-				
-
+				}
+				if(self.timer > self.config.stater.state2.time && this.state1.initied === true && this.state1.goaled === true &&  this.state2.initied === false){
+					console.log('spawing 2 ');
+					this.state2.keys.shuffle(this.state2.keys);
+					
+						
+					self.displayer(this.state2.keys.toString());
+					
+					/*self.displayer(this.state2.msg[0]);*/
+					// self.Mob.spawn(['type1', 'type2'], [8,2]);
+					this.state2.initied = true;
+					
+					return;
+				}
 			}
 		},
 		displayer : function(msg){	
@@ -136,6 +154,16 @@
 		}
 
 	}
+	// helper
+	Array.prototype.shuffle = function(a){
+    var j, x, i;
+    	for (i = a.length; i; i--) {
+	        j = Math.floor(Math.random() * i);
+	        x = a[i - 1];
+	        a[i - 1] = a[j];
+	        a[j] = x;
+    	}}
 	ctx.GameEngine = GameEngine;
 	var self = GameEngine;
 })(App, Matter);
+
